@@ -36,7 +36,7 @@
         t (atom 0)]
     (reagent/render [component-game entities t] (.getElementById js/document "app"))
     (go-loop []
-             (<! (timeout 100))
+             (<! (timeout 25))
              (swap! t inc)
              (recur))))
 
