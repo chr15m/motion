@@ -7,14 +7,15 @@
 ;; Functions
 
 (def m js/Math)
+(def tau (* m.PI 2))
 
 (defn pol2crt [cx cy r a]
   [(+ cx (* r (m.cos a)))
    (+ cy (* r (m.sin a)))])
 
 (defn svg-arc [cx cy r as ae]
-  (let [[xs ys] (pol2crt cx cy r ae)
-        [xe ye] (pol2crt cx cy r as)
+  (let [[xs ys] (pol2crt cx cy r (+ (mod ae tau) tau))
+        [xe ye] (pol2crt cx cy r (+ (mod as tau) tau))
         direction (if (<= (- ae as) m.PI) 0 1)
         path ["M" xs ys
               "A" r r 0 direction 0 xe ye]]
@@ -42,7 +43,7 @@
 (defn component-svg-arc [t]
   (let [p (* m.PI 2 (/ (mod @t 100) 100))]
   [:svg {:x 0 :y 0 :width 200 :height 200 :style {:left "600px" :top "200px" :position "absolute"}}
-   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 100 100 50 (m.max 0 (- p 1)) p)}]
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 0 0 50 (- p 1) p)}]
    [:circle {:cx 100 :cy 100 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
 
 (defn component-svg-x [x y]
