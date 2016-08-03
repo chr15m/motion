@@ -7,16 +7,15 @@
 
 (def mount-target
   [:div#app
-      [:h3 "ClojureScript has not been compiled!"]
-      [:p "please run "
-       [:b "lein figwheel"]
-       " in order to start the compiler"]])
+   [:div {:class "infinitelives-spinner infinitelives-spinner-vertical-center"}]
+   [:div {:id "overlay"}]])
 
 (defn head []
   [:head
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
+   (include-css (if (env :dev) "/css/spinner.css" "/css/spinner.min.css"))  
    (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
 
 (def loading-page
