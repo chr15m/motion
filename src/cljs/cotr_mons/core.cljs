@@ -28,8 +28,10 @@
 ;; Components
 
 (defn component-svg-path-1 [x y]
-  [:g (g-trans x y)
-   [:path {:d (js/roundPathCorners "M 0 50 L 20 20 L 40 40 L 100 30 L 120 40 L 150 5 L 150 50 L 100 100 Z 0 50" 5 false) :fill "none" :stroke "#41A4E6" :stroke-width "2px" :stroke-linecap "round"}]])
+  (let [over (atom false)]
+    (fn []
+      [:g (merge (g-trans x y) {:on-mouse-over (fn [ev] (reset! over true) nil) :on-mouse-out (fn [ev] (reset! over false) nil)})
+       [:path {:d (js/roundPathCorners "M 0 50 L 20 20 L 40 40 L 100 30 L 120 40 L 150 5 L 150 50 L 100 100 Z 0 50" 5 false) :fill "none" :stroke (if @over "#E6A441" "#41A4E6") :stroke-width "2px" :stroke-linecap "round"}]])))
 
 (defn component-svg-top [ow]
   [:g
@@ -73,7 +75,7 @@
      [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"}}
       (component-svg-top (* ow 2))
       [:g (g-trans ow oh)
-       (component-svg-path-1 0 -200)
+       [component-svg-path-1 0 -200]
        (component-svg-circle-test t 300 0)
        (component-svg-circle-test-2 t -200 150)
        (component-svg-arc t -100 0)
