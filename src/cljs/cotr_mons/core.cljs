@@ -27,6 +27,14 @@
 ;; -------------------------
 ;; Components
 
+(defn component-svg-filter-glow []
+  [:filter {:id "glowfilter" :x 0 :y 0 :width "200%" :height "200%"
+            :dangerouslySetInnerHTML
+            {:__html "<feGaussianBlur in='SourceGraphic' stdDeviation='5'/>
+                      <feMerge>
+                        <feMergeNode/><feMergeNode in='SourceGraphic'/>
+                      </feMerge>"}}])
+
 (defn component-svg-path-1 [x y]
   (let [over (atom false)]
     (fn []
@@ -73,8 +81,10 @@
     [:div
      [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}} "ctr"]
      [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"}}
+      [:defs
+        (component-svg-filter-glow)]
       (component-svg-top (* ow 2))
-      [:g (g-trans ow oh)
+      [:g (merge (g-trans ow oh) {:filter "url(#glowfilter)"})
        [component-svg-path-1 0 -200]
        (component-svg-circle-test t 300 0)
        (component-svg-circle-test-2 t -200 150)
