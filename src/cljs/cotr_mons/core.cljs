@@ -30,9 +30,9 @@
 (defn component-svg-circle-test [t]
   (let [t-scale 0.3]
     [:svg {:x 0 :y 0 :width 200 :height 200 :style {:top "300px" :left "400px" :position "absolute"}}
-     [:circle {:cx 100 :cy 100 :r (+ 35 (* (m.sin (* @t t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]    
-     [:circle {:cx 100 :cy 100 :r (+ 40 (* (m.sin (* @t t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "4px" :stroke-linecap "round"}]
-     [:circle {:cx 100 :cy 100 :r (+ 45 (* (m.sin (* @t t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
+     [:circle {:cx 100 :cy 100 :r (+ 35 (* (m.sin (* (+ @t 100) t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]    
+     [:circle {:cx 100 :cy 100 :r (+ 40 (* (m.sin (* @t t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "4px"}]
+     [:circle {:cx 100 :cy 100 :r (+ 45 (* (m.sin (* (+ @t 200) t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))
 
 (defn component-svg-arc [t]
   (let [p (* m.PI 2 (/ (mod @t 100) 100))]
