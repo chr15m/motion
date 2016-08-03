@@ -12,9 +12,16 @@
   [(+ cx (* r (m.cos a)))
    (+ cy (* r (m.sin a)))])
 
+(defn svg-arc [cx cy r as ae]
+  (let [[xs ys] (pol2crt cx cy r ae)
+        [xe ye] (pol2crt cx cy r as)
+        direction (if (<= (- ae as) m.PI) 0 1)
+        path ["M" xs ys
+              "A" r r 0 direction 0 xe ye]]
+    (clojure.string/join " " path)))
+
 ;; -------------------------
 ;; Components
-
 (defn component-svg-example []
   [:svg {:x 0 :y 0 :width 200 :height 200 :style {:top "100px" :left "100px" :position "absolute"}}
    [:polyline {:points "0 50 20 20 40 40 100 30 120 40 154 5 154 52 100 100 0 50" :fill "none" :stroke "#41A4E6" :stroke-width "2px" :stroke-linecap "round"}]])
