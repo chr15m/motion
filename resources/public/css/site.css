@@ -1,7 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Rajdhani:400,600);
+@import url(../fonts/snap/stylesheet.css);
 
 body, html {
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'snap.seregular', sans-serif;
+  font-size: 15px;
   width: 100%;
   min-height: 100%;
   margin: 0 0;
@@ -11,8 +12,8 @@ body, html {
 
 .body-container {
   -webkit-font-smoothing: antialiased;
-  color: #9e9e9e;
   line-height: 1.5em;
+  color: #666;
 }
 
 a {
