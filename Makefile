@@ -5,8 +5,9 @@ CSS=build/css/site.min.css build/css/spinner.min.css
 APP=build/js/app.js
 IDX=build/index.html
 FNT=build/fonts
+DEP=build/js/rounding.js
 
-all: $(APP) $(CSS) $(IDX) $(FNT)
+all: $(APP) $(CSS) $(IDX) $(FNT) $(DEP)
 
 $(CSS): resources/public/css/*.css
 	$(LEIN) minify-assets
@@ -20,6 +21,9 @@ $(IDX): src/clj/**/handler.clj
 
 $(FNT): resources/public/fonts/**/*
 	cp -av resources/public/fonts build/fonts
+
+$(DEP): resources/public/js/rounding.js
+	cp -av $< $@
 
 clean:
 	$(LEIN) clean
