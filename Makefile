@@ -27,5 +27,5 @@ $(DEP): resources/public/js/rounding.js
 
 clean:
 	$(LEIN) clean
-	rm -rf build
+	rm -rf build/*
 
