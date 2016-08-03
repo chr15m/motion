@@ -15,15 +15,15 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (include-css (if (= (env :dev) true) "/css/spinner.css" "/css/spinner.min.css"))
-   (include-css (if (= (env :dev) true) "/css/site.css" "/css/site.min.css"))])
+   (include-css (if (= (env :dev) true) "css/spinner.css" "css/spinner.min.css"))
+   (include-css (if (= (env :dev) true) "css/site.css" "css/site.min.css"))])
 
 (def loading-page
   (html5
     (head)
     [:body {:class "body-container"}
      mount-target
-     (include-js "/js/app.js")]))
+     (include-js "js/app.js")]))
 
 (defn index-html []
   "output the HTML as a string"
