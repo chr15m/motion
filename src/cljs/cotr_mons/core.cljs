@@ -23,9 +23,14 @@
 ;; -------------------------
 ;; Components
 
-(defn component-svg-example []
+(defn component-svg-path-1 []
   [:svg {:x 0 :y 0 :width 200 :height 200 :style {:top "100px" :left "100px" :position "absolute"}}
-   [:polyline {:points "0 50 20 20 40 40 100 30 120 40 154 5 154 52 100 100 0 50" :fill "none" :stroke "#41A4E6" :stroke-width "2px" :stroke-linecap "round"}]])
+   [:path {:d (js/roundPathCorners "M 0 50 L 20 20 L 40 40 L 100 30 L 120 40 L 150 5 L 150 50 L 100 100 Z 0 50" 5 false) :fill "none" :stroke "#41A4E6" :stroke-width "2px" :stroke-linecap "round"}]])
+
+(defn component-svg-path-2 []
+  [:svg {:x 0 :y 0 :width 200 :height 200 :style {:top "500px" :left "100px" :position "absolute"}}
+   [:path {:d (js/roundPathCorners "M 0 185 L 48 185 L 98 135 L 150 135" 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
+   [:path {:d (js/roundPathCorners "M 0 190 L 50 190 L 100 140 L 150 140" 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]])
 
 (defn component-svg-circle-test [t]
   (let [t-scale 0.3]
@@ -36,22 +41,25 @@
 
 (defn component-svg-arc [t]
   (let [p (* m.PI 2 (/ (mod @t 100) 100))]
-  [:svg {:x 0 :y 0 :width 200 :height 200 :style {:top "200px" :left "600px" :position "absolute"}}
+  [:svg {:x 0 :y 0 :width 200 :height 200 :style {:left "600px" :top "200px" :position "absolute"}}
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 100 100 50 (m.max 0 (- p 1)) p)}]
    [:circle {:cx 100 :cy 100 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
 
-(defn component-svg-x []
-  [:svg {:x 0 :y 0 :width 25 :height 25 :style {:top "500px" :left "700px" :position "absolute"}}
-   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 0 L 25 25 Z"}]
-   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 25 0 L 0 25 Z"}]])
+(defn component-svg-x [x y]
+  [:svg {:x 0 :y 0 :width 15 :height 15 :style {:left (str x "px") :top (str y "px") :position "absolute"}}
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 0 L 15 15 Z"}]
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 15 0 L 0 15 Z"}]])
 
 (defn component-game [entities t]
   [:div
    [:div {:style {:text-align "center" :top "50px" :font-size "20px" :padding "0px"}} "mons"]
-   (component-svg-example)
+   (component-svg-path-1)
+   (component-svg-path-2)
    (component-svg-circle-test t)
-   (component-svg-arc t)  
-   (component-svg-x)])
+   (component-svg-arc t)
+   (component-svg-x 590 530)
+   (component-svg-x 640 520)
+   (component-svg-x 600 500)])
 
 ;; -------------------------
 ;; Initialize app

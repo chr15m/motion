@@ -23,6 +23,7 @@
     (head)
     [:body {:class "body-container"}
      mount-target
+     (include-js "rounding.js")
      (include-js "js/app.js")]))
 
 (defn index-html []
