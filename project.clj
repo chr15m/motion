@@ -35,6 +35,8 @@
 
   :main cotr-mons.server
 
+  :aliases {"index-html" ^{:dev false} ["run" "-m" "cotr-mons.handler/index-html"]}
+
   :clean-targets ^{:protect false}
   [:target-path
    [:cljsbuild :builds :app :compiler :output-dir]
@@ -45,43 +47,34 @@
 
   :minify-assets
   {:assets
-   {"resources/public/css/site.min.css" "resources/public/css/site.css"}}
+   {"build/css/site.min.css" "resources/public/css/site.css"
+    "build/css/spinner.min.css" "resources/public/css/site.css"}}
 
   :cljsbuild
   {:builds {:min
             {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
              :compiler
-             {:output-to "target/cljsbuild/public/js/app.js"
-              :output-dir "target/uberjar"
+             {:output-to "build/js/app.js"
               :optimizations :advanced
               :pretty-print  false}}
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
              :compiler
              {:main "cotr-mons.dev"
-              :asset-path "/js/out"
+              :asset-path "js/out"
               :output-to "target/cljsbuild/public/js/app.js"
               :output-dir "target/cljsbuild/public/js/out"
               :source-map true
               :optimizations :none
-              :pretty-print  true}}
-
-
-
-            }
-   }
-
+              :pretty-print  true}}}}
 
   :figwheel
   {:http-server-root "public"
    :server-port 3449
    :nrepl-port 7002
-   :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"
-                      ]
+   :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
    :css-dirs ["resources/public/css"]
    :ring-handler cotr-mons.handler/app}
-
-
 
   :profiles {:dev {:repl-options {:init-ns cotr-mons.repl}
 
@@ -91,12 +84,10 @@
                                   [figwheel-sidecar "0.5.4-5"]
                                   [org.clojure/tools.nrepl "0.2.12"]
                                   [com.cemerick/piggieback "0.2.2-SNAPSHOT"]
-                                  [pjstadig/humane-test-output "0.8.0"]
-                                  ]
+                                  [pjstadig/humane-test-output "0.8.0"]]
 
                    :source-paths ["env/dev/clj"]
-                   :plugins [[lein-figwheel "0.5.4-5"]
-                             ]
+                   :plugins [[lein-figwheel "0.5.4-5"]]
 
                    :injections [(require 'pjstadig.humane-test-output)
                                 (pjstadig.humane-test-output/activate!)]

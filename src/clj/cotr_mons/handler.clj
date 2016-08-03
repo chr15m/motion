@@ -15,8 +15,8 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (include-css (if (env :dev) "/css/spinner.css" "/css/spinner.min.css"))  
-   (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
+   (include-css (if (= (env :dev) true) "/css/spinner.css" "/css/spinner.min.css"))
+   (include-css (if (= (env :dev) true) "/css/site.css" "/css/site.min.css"))])
 
 (def loading-page
   (html5
@@ -25,6 +25,9 @@
      mount-target
      (include-js "/js/app.js")]))
 
+(defn index-html []
+  "output the HTML as a string"
+  (print (apply str loading-page)))
 
 (defroutes routes
   (GET "/" [] loading-page)
