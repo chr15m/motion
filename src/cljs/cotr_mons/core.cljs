@@ -40,12 +40,18 @@
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 100 100 50 (m.max 0 (- p 1)) p)}]
    [:circle {:cx 100 :cy 100 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
 
+(defn component-svg-x []
+  [:svg {:x 0 :y 0 :width 25 :height 25 :style {:top "500px" :left "700px" :position "absolute"}}
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 0 L 25 25 Z"}]
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 25 0 L 0 25 Z"}]])
+
 (defn component-game [entities t]
   [:div
    [:div {:style {:text-align "center" :top "50px" :font-size "20px" :padding "0px"}} "cotr mons"]
    (component-svg-example)
    (component-svg-circle-test t)
-   (component-svg-arc t)])
+   (component-svg-arc t)  
+   (component-svg-x)])
 
 ;; -------------------------
 ;; Initialize app
