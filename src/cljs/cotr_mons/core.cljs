@@ -22,6 +22,7 @@
 
 ;; -------------------------
 ;; Components
+
 (defn component-svg-example []
   [:svg {:x 0 :y 0 :width 200 :height 200 :style {:top "100px" :left "100px" :position "absolute"}}
    [:polyline {:points "0 50 20 20 40 40 100 30 120 40 154 5 154 52 100 100 0 50" :fill "none" :stroke "#41A4E6" :stroke-width "2px" :stroke-linecap "round"}]])
@@ -33,11 +34,18 @@
      [:circle {:cx 100 :cy 100 :r (+ 40 (* (m.sin (* @t t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "4px" :stroke-linecap "round"}]
      [:circle {:cx 100 :cy 100 :r (+ 45 (* (m.sin (* @t t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
 
+(defn component-svg-arc [t]
+  (let [p (* m.PI 2 (/ (mod @t 100) 100))]
+  [:svg {:x 0 :y 0 :width 200 :height 200 :style {:top "200px" :left "600px" :position "absolute"}}
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 100 100 50 (m.max 0 (- p 1)) p)}]
+   [:circle {:cx 100 :cy 100 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
+
 (defn component-game [entities t]
   [:div
    [:div {:style {:text-align "center" :top "50px" :font-size "20px" :padding "0px"}} "cotr mons"]
    (component-svg-example)
-   (component-svg-circle-test t)])
+   (component-svg-circle-test t)
+   (component-svg-arc t)])
 
 ;; -------------------------
 ;; Initialize app
