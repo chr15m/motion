@@ -47,7 +47,7 @@
 
 (defn component-game [entities t]
   [:div
-   [:div {:style {:text-align "center" :top "50px" :font-size "20px" :padding "0px"}} "cotr mons"]
+   [:div {:style {:text-align "center" :top "50px" :font-size "20px" :padding "0px"}} "mons"]
    (component-svg-example)
    (component-svg-circle-test t)
    (component-svg-arc t)  
