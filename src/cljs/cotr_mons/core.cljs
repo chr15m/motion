@@ -61,6 +61,11 @@
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 0 L 15 15 Z"}]
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 15 0 L 0 15 Z"}]])
 
+(defn component-svg-+ [x y]
+  [:g (g-trans x y)
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 7.5 0 L 7.5 15 Z"}]
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 7.5 L 15 7.5 Z"}]])
+
 (defn component-game [entities size t]
   (let [[ow oh] (map #(/ % 2) @size)]
     [:div
@@ -74,7 +79,10 @@
        (component-svg-arc t -100 0)
        (component-svg-x 190 130)
        (component-svg-x 240 220)
-       (component-svg-x 220 240)]]]))
+       (component-svg-x 220 240)
+       (component-svg-+ -200 -200)
+       (component-svg-+ -230 -230)
+       (component-svg-+ -190 -250)]]]))
 
 ;; -------------------------
 ;; Initialize app
