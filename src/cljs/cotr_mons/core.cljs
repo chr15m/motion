@@ -8,6 +8,10 @@
 
 (def m js/Math)
 
+(defn pol2crt [cx cy r a]
+  [(+ cx (* r (m.cos a)))
+   (+ cy (* r (m.sin a)))])
+
 ;; -------------------------
 ;; Components
 
