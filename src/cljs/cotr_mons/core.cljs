@@ -17,8 +17,8 @@
   (let [[xs ys] (pol2crt cx cy r (+ (mod ae tau) tau))
         [xe ye] (pol2crt cx cy r (+ (mod as tau) tau))
         direction (if (<= (- ae as) m.PI) 0 1)
-        path ["M" xs ys
-              "A" r r 0 direction 0 xe ye]]
+        path ["M" (m.round xs) (m.round ys)
+              "A" r r 0 direction 0 (m.round xe) (m.round ye)]]
     (clojure.string/join " " path)))
 
 (defn g-trans [x y]
