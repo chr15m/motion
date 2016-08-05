@@ -24,6 +24,8 @@
 (defn g-trans [x y]
   {:transform (str "translate(" x "," y ")")})
 
+(def default-style {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"})
+
 ;; -------------------------
 ;; Components
 
@@ -45,11 +47,11 @@
       [:g (merge (g-trans x y) {:on-mouse-over (fn [ev] (reset! over true) nil) :on-mouse-out (fn [ev] (reset! over false) nil)})
        [:path {:d (js/roundPathCorners "M -100 -100 L 100 -100 L 120 -80 L 200 -80 L 200 0 L 0 0 L -20 -20 L -100 -20 Z" 5 false) :fill "url(#hatch)" :stroke (if @over "#E6A441" "#41A4E6") :stroke-width "2px" :stroke-linecap "round"}]])))
 
-(defn component-svg-hexagon [x y r]
+(defn component-svg-hexagon [x y r & {:keys [style] :or {style default-style}}]
   (let [seg (/ m.PI 3)
         coords (map #(let [a (+ (* % seg) (/ seg 2))] (str (m.round (* r (m.sin a))) " " (m.round (* r (m.cos a))))) (range 6))]
   [:g (g-trans x y)
-   [:path {:d (js/roundPathCorners (str "M " (clojure.string/join " L " coords) " Z") 5 false) :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
+   [:path (merge {:d (js/roundPathCorners (str "M " (clojure.string/join " L " coords) " Z") 5 false)} style)]]))
 
 (defn component-svg-top [ow]
   [:g
@@ -70,11 +72,27 @@
      [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ @t 200) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
      [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ @t 300) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))
 
-(defn component-svg-arc [t x y]
+(defn component-svg-arc [x y r as ae t]
+  [:g (g-trans x y)
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width t :d (svg-arc 0 0 r as ae)}]])
+
+(defn component-svg-arc-thing [t x y]
   (let [p (* m.PI 2 (/ (mod @t 100) 100))]
     [:g (g-trans x y)
      [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 0 0 50 (- p 1) p)}]
      [:circle {:cx 0 :cy 0 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
+
+(defn component-svg-hex-thing [x y]
+  (let [over (atom false)]
+    (fn []
+      [:g {:on-mouse-over (fn [ev] (reset! over true) nil) :on-mouse-out (fn [ev] (reset! over false) nil)}
+       (component-svg-hexagon x y 40 :style (assoc default-style :fill "url(#hatch)"))
+       (if @over
+         [:g
+          (component-svg-arc x y 78 (* m.PI .75) (* m.PI 1.25) 2)
+          (component-svg-arc x y 78 (* m.PI -0.25) (* m.PI 0.25) 2)
+          (component-svg-arc x y 70 (* m.PI .75) (* m.PI 1.25) 5)
+          (component-svg-arc x y 70 (* m.PI -0.25) (* m.PI 0.25) 5)])])))
 
 (defn component-svg-x [x y]
   [:g (g-trans x y)
@@ -99,8 +117,9 @@
        [component-svg-path-1 0 -200]
        (component-svg-circle-test t 300 0)
        (component-svg-circle-test-2 t -200 150)
-       (component-svg-arc t -100 0)
-       (component-svg-hexagon -300 0 40)
+       (component-svg-arc-thing t -100 0)
+       [component-svg-hex-thing -400 200]
+       (component-svg-hexagon -350 0 40)
        (component-svg-x 190 130)
        (component-svg-x 240 220)
        (component-svg-x 220 240)
