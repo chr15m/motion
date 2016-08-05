@@ -41,6 +41,12 @@
       [:g (merge (g-trans x y) {:on-mouse-over (fn [ev] (reset! over true) nil) :on-mouse-out (fn [ev] (reset! over false) nil)})
        [:path {:d (js/roundPathCorners "M 0 50 L 20 20 L 40 40 L 100 30 L 120 40 L 150 5 L 150 50 L 100 100 Z 0 50" 5 false) :fill "none" :stroke (if @over "#E6A441" "#41A4E6") :stroke-width "2px" :stroke-linecap "round"}]])))
 
+(defn component-svg-hexagon [x y r]
+  (let [seg (/ m.PI 3)
+        coords (map #(let [a (+ (* % seg) (/ seg 2))] (str (m.round (* r (m.sin a))) " " (m.round (* r (m.cos a))))) (range 6))]
+  [:g (g-trans x y)
+   [:path {:d (js/roundPathCorners (str "M " (clojure.string/join " L " coords) " Z") 5 false) :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
+
 (defn component-svg-top [ow]
   [:g
    [:path {:d (js/roundPathCorners (str "M 0 45 L 48 45 L 98 5 L " ow " 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
@@ -89,6 +95,7 @@
        (component-svg-circle-test t 300 0)
        (component-svg-circle-test-2 t -200 150)
        (component-svg-arc t -100 0)
+       (component-svg-hexagon -300 0 40)
        (component-svg-x 190 130)
        (component-svg-x 240 220)
        (component-svg-x 220 240)
