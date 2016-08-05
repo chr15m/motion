@@ -39,7 +39,7 @@
   (let [over (atom false)]
     (fn []
       [:g (merge (g-trans x y) {:on-mouse-over (fn [ev] (reset! over true) nil) :on-mouse-out (fn [ev] (reset! over false) nil)})
-       [:path {:d (js/roundPathCorners "M 0 50 L 20 20 L 40 40 L 100 30 L 120 40 L 150 5 L 150 50 L 100 100 Z 0 50" 5 false) :fill "none" :stroke (if @over "#E6A441" "#41A4E6") :stroke-width "2px" :stroke-linecap "round"}]])))
+       [:path {:d (js/roundPathCorners "M -100 -100 L 100 -100 L 120 -80 L 200 -80 L 200 0 L 0 0 L -20 -20 L -100 -20 Z" 5 false) :fill "none" :stroke (if @over "#E6A441" "#41A4E6") :stroke-width "1px" :stroke-linecap "round"}]])))
 
 (defn component-svg-hexagon [x y r]
   (let [seg (/ m.PI 3)
