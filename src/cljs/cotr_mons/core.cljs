@@ -35,11 +35,15 @@
                         <feMergeNode/><feMergeNode in='SourceGraphic'/>
                       </feMerge>"}}])
 
+(defn component-svg-pattern-hatch []
+  [:pattern {:id "hatch" :width 7 :height 7 :patternTransform "rotate(45 0 0)" :patternUnits "userSpaceOnUse"}
+   [:line {:x1 0 :y1 0 :x2 0 :y2 7 :style {:stroke "#41A4E6" :stroke-width 2}}]])
+
 (defn component-svg-path-1 [x y]
   (let [over (atom false)]
     (fn []
       [:g (merge (g-trans x y) {:on-mouse-over (fn [ev] (reset! over true) nil) :on-mouse-out (fn [ev] (reset! over false) nil)})
-       [:path {:d (js/roundPathCorners "M -100 -100 L 100 -100 L 120 -80 L 200 -80 L 200 0 L 0 0 L -20 -20 L -100 -20 Z" 5 false) :fill "none" :stroke (if @over "#E6A441" "#41A4E6") :stroke-width "1px" :stroke-linecap "round"}]])))
+       [:path {:d (js/roundPathCorners "M -100 -100 L 100 -100 L 120 -80 L 200 -80 L 200 0 L 0 0 L -20 -20 L -100 -20 Z" 5 false) :fill "url(#hatch)" :stroke (if @over "#E6A441" "#41A4E6") :stroke-width "2px" :stroke-linecap "round"}]])))
 
 (defn component-svg-hexagon [x y r]
   (let [seg (/ m.PI 3)
@@ -88,7 +92,8 @@
      [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}} "ctr"]
      [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"}}
       [:defs
-        (component-svg-filter-glow)]
+        (component-svg-filter-glow)
+        (component-svg-pattern-hatch)]
       (component-svg-top (* ow 2))
       [:g (merge (g-trans ow oh) {:filter "url(#glowfilter)"})
        [component-svg-path-1 0 -200]
