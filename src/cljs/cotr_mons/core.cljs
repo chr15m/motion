@@ -95,7 +95,7 @@
         (component-svg-filter-glow)
         (component-svg-pattern-hatch)]
       (component-svg-top (* ow 2))
-      [:g (merge (g-trans ow oh) {:filter "url(#glowfilter)"})
+      [:g (merge (g-trans ow oh) (comment {:filter "url(#glowfilter)"}))
        [component-svg-path-1 0 -200]
        (component-svg-circle-test t 300 0)
        (component-svg-circle-test-2 t -200 150)
