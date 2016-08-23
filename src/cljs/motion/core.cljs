@@ -1,6 +1,7 @@
 (ns motion.core
     (:require [reagent.core :as reagent :refer [atom]]
               [cljs.core.async :refer [<! close! timeout chan] :as async]
+              [clojure.string :as string]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant])
@@ -130,28 +131,53 @@
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 7.5 0 L 7.5 15 Z"}]
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 7.5 L 15 7.5 Z"}]])
 
+(defn component-demo-old [size]
+  (let [[ow oh] @size
+        [t c] (timeline -1)]
+    [:g (merge (g-trans ow oh) (comment {:filter "url(#glowfilter)"}))
+     (component-svg-circle-test t 300 0)
+     (component-svg-circle-test-2 t -200 150)
+     [component-svg-circle-test-3 0 200]
+     (component-svg-arc-thing t -100 0)
+     (component-svg-x 190 130)
+     (component-svg-x 240 220)
+     (component-svg-x 220 240)
+     (component-svg-+ -200 -200)
+     (component-svg-+ -230 -230)
+     (component-svg-+ -190 -250)]))
+
+(defn component-demo-curved-path [size]
+  (let [[ow oh] @size]
+    [:g
+     [:defs
+      (component-svg-filter-glow)
+      (component-svg-pattern-hatch)]
+     [:g (merge (g-trans ow oh))
+      [component-svg-path-1 0 -100]
+      [component-svg-hex-thing -80 0]
+      [component-svg-hexagon 180 0 40]
+      [component-svg-hexagon 80 0 40]
+      [:g {:transform "translate(0,100)"}
+       [:path {:d (js/roundPathCorners (str "M -100 45 L 48 45 L 98 5 L 200 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
+       [:path {:d (js/roundPathCorners (str "M -100 50 L 50 50 L 100 10 L 200 10") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]]]]))
+
+(def demos {"curved-path" component-demo-curved-path
+            "old-stuff" component-demo-old})
+
 (defn component-game [size t]
-  (let [[ow oh] (map #(/ % 2) @size)]
+  (let [[ow oh] (map #(/ % 2) @size)
+        frag (get (string/split js/document.location.href "?") 1)]
     [:div
      [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"}}
-      [:defs
-       (component-svg-filter-glow)
-       (component-svg-pattern-hatch)]
+      
       (component-svg-top (* ow 2))
-      [:g (merge (g-trans ow oh) (comment {:filter "url(#glowfilter)"}))
-       [component-svg-path-1 0 -200]
-       (component-svg-circle-test t 300 0)
-       (component-svg-circle-test-2 t -200 150)
-       [component-svg-circle-test-3 0 200]
-       (component-svg-arc-thing t -100 0)
-       [component-svg-hex-thing -400 200]
-       (component-svg-hexagon -350 0 40)
-       (component-svg-x 190 130)
-       (component-svg-x 240 220)
-       (component-svg-x 220 240)
-       (component-svg-+ -200 -200)
-       (component-svg-+ -230 -230)
-       (component-svg-+ -190 -250)]]
+      
+      (if (get demos frag)
+        [:g {:transform (str "translate(" (* ow -1) "," (* oh -1) ")")}
+         [(demos frag) size]]
+        [:g (merge (g-trans ow oh) {:fill "#41A4E6" :text-anchor "middle"})
+         [:text "Demo not found."]])]
+     
      [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}}
       [:a {:href "/"} "<-"]]]))
 
@@ -160,7 +186,9 @@
 
 (defn component-page-contents []
   [:div#contents [:h2 "demos"]
-   [:div [:a {:href "/v?hexagons"} "hexagons"]]])
+   [:ul
+    [:li [:a {:href "/v?curved-path"} "curved path"]]
+    [:li [:a {:href "/v?old-stuff"} "old stuff"]]]])
 
 (defn component-page-viewer []
   [component-game (atom [(.-innerWidth js/window) (.-innerHeight js/window)]) (atom 0)])
