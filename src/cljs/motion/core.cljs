@@ -1,6 +1,9 @@
 (ns motion.core
     (:require [reagent.core :as reagent :refer [atom]]
-              [cljs.core.async :refer [<! close! timeout chan] :as async])
+              [cljs.core.async :refer [<! close! timeout chan] :as async]
+              [reagent.session :as session]
+              [secretary.core :as secretary :include-macros true]
+              [accountant.core :as accountant])
     (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
 ;; -------------------------
@@ -127,14 +130,13 @@
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 7.5 0 L 7.5 15 Z"}]
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 7.5 L 15 7.5 Z"}]])
 
-(defn component-game [entities size t]
+(defn component-game [size t]
   (let [[ow oh] (map #(/ % 2) @size)]
     [:div
-     [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}} "ctr"]
      [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"}}
       [:defs
-        (component-svg-filter-glow)
-        (component-svg-pattern-hatch)]
+       (component-svg-filter-glow)
+       (component-svg-pattern-hatch)]
       (component-svg-top (* ow 2))
       [:g (merge (g-trans ow oh) (comment {:filter "url(#glowfilter)"}))
        [component-svg-path-1 0 -200]
@@ -149,20 +151,45 @@
        (component-svg-x 220 240)
        (component-svg-+ -200 -200)
        (component-svg-+ -230 -230)
-       (component-svg-+ -190 -250)]]]))
+       (component-svg-+ -190 -250)]]
+     [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}}
+      [:a {:href "/"} "<-"]]]))
+
+;; -------------------------
+;; Views
+
+(defn component-page-contents []
+  [:div#contents [:h2 "demos"]
+   [:div [:a {:href "/v?hexagons"} "hexagons"]]])
+
+(defn component-page-viewer []
+  [component-game (atom [(.-innerWidth js/window) (.-innerHeight js/window)]) (atom 0)])
+
+(defn current-page []
+  [:div [(session/get :current-page)]])
+
+;; -------------------------
+;; Routes
+
+(secretary/defroute "/" []
+  (session/put! :current-page #'component-page-contents))
+
+(secretary/defroute "/v" []
+  (session/put! :current-page #'component-page-viewer))
 
 ;; -------------------------
 ;; Initialize app
 
 (defn mount-root []
-  (let [entities (atom [])
-        t (atom 0)
-        size (atom [(.-innerWidth js/window) (.-innerHeight js/window)])]
-    (reagent/render [component-game entities size t] (.getElementById js/document "app"))
-    (go-loop []
-             (<! (timeout 25))
-             (swap! t inc)
-             (recur))))
+  (reagent/render [current-page] (.getElementById js/document "app")))
 
 (defn init! []
+  (accountant/configure-navigation!
+    {:nav-handler
+     (fn [path]
+       (secretary/dispatch! path))
+     :path-exists?
+     (fn [path]
+       (secretary/locate-route path))})
+  (accountant/dispatch-current!)
   (mount-root))
