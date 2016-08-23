@@ -79,7 +79,7 @@
 (defn component-svg-arc-thing [t x y]
   (let [p (* m.PI 2 (/ (mod @t 100) 100))]
     [:g (g-trans x y)
-     [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 0 0 50 (- p 1) p)}]
+     [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 0 0 51 (- p 1) p)}]
      [:circle {:cx 0 :cy 0 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
 
 (defn component-svg-hex-thing [x y]
