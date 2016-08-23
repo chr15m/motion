@@ -1,6 +1,6 @@
 (ns motion.core
     (:require [reagent.core :as reagent :refer [atom]]
-              [cljs.core.async :refer [<! timeout] :as async])
+              [cljs.core.async :refer [<! close! timeout chan] :as async])
     (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
 ;; -------------------------
@@ -20,6 +20,19 @@
         path ["M" (m.round xs) (m.round ys)
               "A" r r 0 direction 0 (m.round xe) (m.round ye)]]
     (clojure.string/join " " path)))
+
+(defn timeline [duration & {:keys [a c interval] :or {a (atom 0) c (chan) interval 16}}]
+    (reset! a 0)
+    (go-loop []
+             (let [new-val (swap! a (fn [p] (if p (+ p interval))))]
+               (if (and new-val (< new-val duration))
+                 (do
+                   (<! (timeout interval))
+                   (recur))
+                 (do
+                   (reset! a nil)
+                   (if c (close! c))))))
+  [a c])
 
 (defn g-trans [x y]
   {:transform (str "translate(" x "," y ")")})
@@ -72,6 +85,16 @@
      [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ @t 200) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
      [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ @t 300) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))
 
+(defn component-svg-circle-test-3 [x y]
+  (let [[t c] (timeline 2000)]
+    (go-loop [[t c] [t c]]
+      (<! c)
+      (recur (timeline 2000 :a t)))
+    (fn []
+      (if @t
+        [:g (g-trans x y)
+         [:circle {:cx 0 :cy 0 :r (+ (/ @t 10) 20) :fill "none" :stroke "#41A4E6" :stroke-width "2px"}]]))))
+
 (defn component-svg-arc [x y r as ae t]
   [:g (g-trans x y)
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width t :d (svg-arc 0 0 r as ae)}]])
@@ -117,6 +140,7 @@
        [component-svg-path-1 0 -200]
        (component-svg-circle-test t 300 0)
        (component-svg-circle-test-2 t -200 150)
+       [component-svg-circle-test-3 0 200]
        (component-svg-arc-thing t -100 0)
        [component-svg-hex-thing -400 200]
        (component-svg-hexagon -350 0 40)
