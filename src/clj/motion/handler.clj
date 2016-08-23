@@ -1,8 +1,8 @@
-(ns cotr-mons.handler
+(ns motion.handler
   (:require [compojure.core :refer [GET defroutes]]
             [compojure.route :refer [not-found resources]]
             [hiccup.page :refer [include-js include-css html5]]
-            [cotr-mons.middleware :refer [wrap-middleware]]
+            [motion.middleware :refer [wrap-middleware]]
             [config.core :refer [env]]))
 
 (def mount-target

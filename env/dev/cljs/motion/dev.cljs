@@ -1,5 +1,5 @@
-(ns ^:figwheel-no-load cotr-mons.dev
-  (:require [cotr-mons.core :as core]
+(ns ^:figwheel-no-load motion.dev
+  (:require [motion.core :as core]
             [figwheel.client :as figwheel :include-macros true]))
 
 (enable-console-print!)

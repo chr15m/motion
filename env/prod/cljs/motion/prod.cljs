@@ -1,5 +1,5 @@
-(ns cotr-mons.prod
-  (:require [cotr-mons.core :as core]))
+(ns motion.prod
+  (:require [motion.core :as core]))
 
 ;;ignore println statements in prod
 (set! *print-fn* (fn [& _]))

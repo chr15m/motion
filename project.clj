@@ -1,4 +1,4 @@
-(defproject cotr-mons "0.1.0-SNAPSHOT"
+(defproject motion "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -26,16 +26,16 @@
             [lein-asset-minifier "0.2.7"
              :exclusions [org.clojure/clojure]]]
 
-  :ring {:handler cotr-mons.handler/app
-         :uberwar-name "cotr-mons.war"}
+  :ring {:handler motion.handler/app
+         :uberwar-name "motion.war"}
 
   :min-lein-version "2.5.0"
 
-  :uberjar-name "cotr-mons.jar"
+  :uberjar-name "motion.jar"
 
-  :main cotr-mons.server
+  :main motion.server
 
-  :aliases {"index-html" ^{:dev false} ["run" "-m" "cotr-mons.handler/index-html"]}
+  :aliases {"index-html" ^{:dev false} ["run" "-m" "motion.handler/index-html"]}
 
   :clean-targets ^{:protect false}
   [:target-path
@@ -60,7 +60,7 @@
             :app
             {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
              :compiler
-             {:main "cotr-mons.dev"
+             {:main "motion.dev"
               :asset-path "js/out"
               :output-to "target/cljsbuild/public/js/app.js"
               :output-dir "target/cljsbuild/public/js/out"
@@ -74,9 +74,9 @@
    :nrepl-port 7002
    :nrepl-middleware ["cemerick.piggieback/wrap-cljs-repl"]
    :css-dirs ["resources/public/css"]
-   :ring-handler cotr-mons.handler/app}
+   :ring-handler motion.handler/app}
 
-  :profiles {:dev {:repl-options {:init-ns cotr-mons.repl}
+  :profiles {:dev {:repl-options {:init-ns motion.repl}
 
                    :dependencies [[ring/ring-mock "0.3.0"]
                                   [ring/ring-devel "1.5.0"]

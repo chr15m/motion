@@ -1,4 +1,4 @@
-(ns cotr-mons.core
+(ns motion.core
     (:require [reagent.core :as reagent :refer [atom]]
               [cljs.core.async :refer [<! timeout] :as async])
     (:require-macros [cljs.core.async.macros :refer [go go-loop]]))

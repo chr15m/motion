@@ -1,5 +1,5 @@
-(ns cotr-mons.repl
-  (:use cotr-mons.handler
+(ns motion.repl
+  (:use motion.handler
         ring.server.standalone
         [ring.middleware file-info file]))
 
