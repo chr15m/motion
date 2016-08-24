@@ -84,6 +84,7 @@
       (let [p (* m.PI 2 (/ (mod @t 2000) 2000))]
         [:g (g-trans x y)
          [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 0 0 51 (- p 1) p)}]
+         [:circle {:cx 0 :cy 0 :r 57 :fill "none" :stroke "#41A4E6" :stroke-width "3px" :stroke-linecap "round"}]     
          [:circle {:cx 0 :cy 0 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))))
 
 (defn component-svg-hex-thing [x y]
@@ -108,42 +109,44 @@
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 7.5 0 L 7.5 15 Z"}]
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 7.5 L 15 7.5 Z"}]])
 
-(defn component-demo-old [size]
-  (let [[ow oh] @size]
-    (fn []
-      [:g (merge (g-trans ow oh) (comment {:filter "url(#glowfilter)"}))
-       [component-svg-circle-test 300 0]
-       [component-svg-circle-test-2 -200 150]
-       [component-svg-circle-test-3 0 200]
-       [component-svg-arc-thing -100 0]
+(defn component-demo-nibblets [size]
+  (fn []
+    [:g
+       (component-svg-x 90 30)
+       (component-svg-x 140 20)
+       (component-svg-x 120 40)
+       (component-svg-+ -100 -100)
+       (component-svg-+ -130 -130)
+       (component-svg-+ -90 -150)]))
 
-       (component-svg-x 190 130)
-       (component-svg-x 240 220)
-       (component-svg-x 220 240)
-       (component-svg-+ -200 -200)
-       (component-svg-+ -230 -230)
-       (component-svg-+ -190 -250)])))
+(defn component-demo-circles [size]
+  (fn []
+    [:g
+     [component-svg-circle-test 150 -100]
+     [component-svg-circle-test-2 -200 50]
+     [component-svg-circle-test-3 0 100]
+     [component-svg-arc-thing -100 -100]]))
 
 (defn component-demo-curved-path [size]
   (fn []
-    (let [[ow oh] @size]
-      [:g
-       [:defs
-        (component-svg-filter-glow)
-        (component-svg-pattern-hatch)]
-       [:g (merge (g-trans ow oh))
-        [component-svg-path-1 0 -100]
-        [component-svg-hex-thing -80 0]
-        [component-svg-hexagon 180 0 40]
-        [component-svg-hexagon 80 0 40]
-        [:g {:transform "translate(0,100)"}
-         [:path {:d (js/roundPathCorners (str "M -100 45 L 48 45 L 98 5 L 200 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
-         [:path {:d (js/roundPathCorners (str "M -100 50 L 50 50 L 100 10 L 200 10") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]]]])))
+    [:g
+     [:defs
+      (component-svg-filter-glow)
+      (component-svg-pattern-hatch)]
+     [:g
+      [component-svg-path-1 0 -100]
+      [component-svg-hex-thing -80 0]
+      [component-svg-hexagon 180 0 40]
+      [component-svg-hexagon 80 0 40]
+      [:g {:transform "translate(0,100)"}
+       [:path {:d (js/roundPathCorners (str "M -100 45 L 48 45 L 98 5 L 200 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
+       [:path {:d (js/roundPathCorners (str "M -100 50 L 50 50 L 100 10 L 200 10") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]]]]))
 
-(def demos {"curved-path" component-demo-curved-path
-            "old-stuff" component-demo-old})
+(def demos {"curved path" component-demo-curved-path
+            "circles" component-demo-circles
+            "nibblets" component-demo-nibblets})
 
-(defn component-game [size demo-name]
+(defn component-svg-main [size demo-name]
   (fn []
     (let [[ow oh] (map #(int (/ % 2)) @size)]
       [:div
@@ -151,7 +154,7 @@
 
         (component-svg-top (* ow 2))
 
-        [:g {:transform (str "translate(" (int (* (get @size 0) -0.5)) "," (int (* (get @size 1) -0.5)) ")")}
+        [:g (g-trans ow oh)
          [(demos demo-name) size]]]
 
        [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}}
@@ -163,15 +166,15 @@
 (defn component-page-contents []
   [:div#contents [:h2 "demos"]
    [:ul
-    [:li [:a {:href "/v?curved-path"} "curved path"]]
-    [:li [:a {:href "/v?old-stuff"} "old stuff"]]]])
+    (doall (for [[d f] demos]
+             [:li {:key d} [:a {:href (str "/v?" d)} d]]))]])
 
 (defn component-page-viewer []
-  (let [demo-name (get (string/split js/document.location.href "?") 1)
+  (let [demo-name (js/unescape (get (string/split js/document.location.href "?") 1))
         size (atom [(.-innerWidth js/window) (.-innerHeight js/window)])]
     (fn []
       (if (get demos demo-name)
-        [component-game size demo-name]
+        [component-svg-main size demo-name]
         [:div#contents "Demo not found."]))))
 
 (defn current-page []
