@@ -4,44 +4,13 @@
               [clojure.string :as string]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
-              [accountant.core :as accountant])
+              [accountant.core :as accountant]
+              [motion.utils :refer [svg-arc timeline g-trans]])
     (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
-;; -------------------------
-;; Functions
+(def default-style {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"})
 
 (def m js/Math)
-(def tau (* m.PI 2))
-
-(defn pol2crt [cx cy r a]
-  [(+ cx (* r (m.cos a)))
-   (+ cy (* r (m.sin a)))])
-
-(defn svg-arc [cx cy r as ae]
-  (let [[xs ys] (pol2crt cx cy r (+ (mod ae tau) tau))
-        [xe ye] (pol2crt cx cy r (+ (mod as tau) tau))
-        direction (if (<= (- ae as) m.PI) 0 1)
-        path ["M" (m.round xs) (m.round ys)
-              "A" r r 0 direction 0 (m.round xe) (m.round ye)]]
-    (clojure.string/join " " path)))
-
-(defn timeline [duration & {:keys [a c interval] :or {a (atom 0) c (chan) interval 16}}]
-    (reset! a 0)
-    (go-loop []
-             (let [new-val (swap! a (fn [p] (if p (+ p interval))))]
-               (if (and new-val (< new-val duration))
-                 (do
-                   (<! (timeout interval))
-                   (recur))
-                 (do
-                   (reset! a nil)
-                   (if c (close! c))))))
-  [a c])
-
-(defn g-trans [x y]
-  {:transform (str "translate(" x "," y ")")})
-
-(def default-style {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"})
 
 ;; -------------------------
 ;; Components
@@ -75,39 +44,47 @@
    [:path {:d (js/roundPathCorners (str "M 0 45 L 48 45 L 98 5 L " ow " 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
    [:path {:d (js/roundPathCorners (str "M 0 50 L 50 50 L 100 10 L " ow " 10") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]])
 
-(defn component-svg-circle-test [t x y]
-  (let [t-scale 0.3]
-    [:g (g-trans x y)
-     [:circle {:cx 0 :cy 0 :r (+ 35 (* (m.sin (* (+ @t 100) t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
-     [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* @t t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "4px"}]
-     [:circle {:cx 0 :cy 0 :r (+ 45 (* (m.sin (* (+ @t 200) t-scale)) 2)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))
+(defn component-svg-circle-test [x y]
+  (let [[tl] (timeline js/Infinity)]
+    (fn []
+      (let [t (/ @tl 500)]
+        [:g (g-trans x y)
+         [:circle {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 1)) 10)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
+         [:circle {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 1.5)) 10)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
+         [:circle {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 2)) 10)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))))
 
-(defn component-svg-circle-test-2 [t x y]
-  (let [t-scale 0.1]
-    [:g (g-trans x y)
-     [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ @t 100) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
-     [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ @t 200) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
-     [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ @t 300) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))
+(defn component-svg-circle-test-2 [x y]
+  (let [t-scale 0.1
+        [tl] (timeline js/Infinity)]
+    (fn []
+      (let [t (/ @tl 10)]
+        [:g (g-trans x y)
+         [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ t 100) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
+         [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ t 200) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
+         [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ t 300) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))))
 
 (defn component-svg-circle-test-3 [x y]
-  (let [[t c] (timeline 2000)]
-    (go-loop [[t c] [t c]]
+  (let [duration 2000
+        [t g c] (timeline duration)]
+    (go-loop [[t g c] [t g c]]
       (<! c)
-      (recur (timeline 2000 :a t)))
+      (recur (timeline 2000 :atoms {:time t :go g})))
     (fn []
-      (if @t
+      (if @g
         [:g (g-trans x y)
-         [:circle {:cx 0 :cy 0 :r (+ (/ @t 10) 20) :fill "none" :stroke "#41A4E6" :stroke-width "2px"}]]))))
+         [:circle {:cx 0 :cy 0 :r (+ (/ @t 20) 3) :fill "none" :stroke "#41A4E6" :stroke-opacity (- 1 (/ @t duration)) :stroke-width "2px"}]]))))
 
-(defn component-svg-arc [x y r as ae t]
+(defn component-svg-arc [x y r as ae th]
   [:g (g-trans x y)
-   [:path {:fill "none" :stroke "#41A4E6" :stroke-width t :d (svg-arc 0 0 r as ae)}]])
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width th :d (svg-arc 0 0 r as ae)}]])
 
-(defn component-svg-arc-thing [t x y]
-  (let [p (* m.PI 2 (/ (mod @t 100) 100))]
-    [:g (g-trans x y)
-     [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 0 0 51 (- p 1) p)}]
-     [:circle {:cx 0 :cy 0 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))
+(defn component-svg-arc-thing [x y]
+  (let [[t] (timeline js/Infinity)]
+    (fn []
+      (let [p (* m.PI 2 (/ (mod @t 2000) 2000))]
+        [:g (g-trans x y)
+         [:path {:fill "none" :stroke "#41A4E6" :stroke-width "5" :d (svg-arc 0 0 51 (- p 1) p)}]
+         [:circle {:cx 0 :cy 0 :r 53 :fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}]]))))
 
 (defn component-svg-hex-thing [x y]
   (let [over (atom false)]
@@ -132,54 +109,53 @@
    [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 7.5 L 15 7.5 Z"}]])
 
 (defn component-demo-old [size]
-  (let [[ow oh] @size
-        [t c] (timeline -1)]
-    [:g (merge (g-trans ow oh) (comment {:filter "url(#glowfilter)"}))
-     (component-svg-circle-test t 300 0)
-     (component-svg-circle-test-2 t -200 150)
-     [component-svg-circle-test-3 0 200]
-     (component-svg-arc-thing t -100 0)
-     (component-svg-x 190 130)
-     (component-svg-x 240 220)
-     (component-svg-x 220 240)
-     (component-svg-+ -200 -200)
-     (component-svg-+ -230 -230)
-     (component-svg-+ -190 -250)]))
+  (let [[ow oh] @size]
+    (fn []
+      [:g (merge (g-trans ow oh) (comment {:filter "url(#glowfilter)"}))
+       [component-svg-circle-test 300 0]
+       [component-svg-circle-test-2 -200 150]
+       [component-svg-circle-test-3 0 200]
+       [component-svg-arc-thing -100 0]
+
+       (component-svg-x 190 130)
+       (component-svg-x 240 220)
+       (component-svg-x 220 240)
+       (component-svg-+ -200 -200)
+       (component-svg-+ -230 -230)
+       (component-svg-+ -190 -250)])))
 
 (defn component-demo-curved-path [size]
-  (let [[ow oh] @size]
-    [:g
-     [:defs
-      (component-svg-filter-glow)
-      (component-svg-pattern-hatch)]
-     [:g (merge (g-trans ow oh))
-      [component-svg-path-1 0 -100]
-      [component-svg-hex-thing -80 0]
-      [component-svg-hexagon 180 0 40]
-      [component-svg-hexagon 80 0 40]
-      [:g {:transform "translate(0,100)"}
-       [:path {:d (js/roundPathCorners (str "M -100 45 L 48 45 L 98 5 L 200 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
-       [:path {:d (js/roundPathCorners (str "M -100 50 L 50 50 L 100 10 L 200 10") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]]]]))
+  (fn []
+    (let [[ow oh] @size]
+      [:g
+       [:defs
+        (component-svg-filter-glow)
+        (component-svg-pattern-hatch)]
+       [:g (merge (g-trans ow oh))
+        [component-svg-path-1 0 -100]
+        [component-svg-hex-thing -80 0]
+        [component-svg-hexagon 180 0 40]
+        [component-svg-hexagon 80 0 40]
+        [:g {:transform "translate(0,100)"}
+         [:path {:d (js/roundPathCorners (str "M -100 45 L 48 45 L 98 5 L 200 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
+         [:path {:d (js/roundPathCorners (str "M -100 50 L 50 50 L 100 10 L 200 10") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]]]])))
 
 (def demos {"curved-path" component-demo-curved-path
             "old-stuff" component-demo-old})
 
-(defn component-game [size t]
-  (let [[ow oh] (map #(/ % 2) @size)
-        frag (get (string/split js/document.location.href "?") 1)]
-    [:div
-     [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"}}
-      
-      (component-svg-top (* ow 2))
-      
-      (if (get demos frag)
-        [:g {:transform (str "translate(" (* ow -1) "," (* oh -1) ")")}
-         [(demos frag) size]]
-        [:g (merge (g-trans ow oh) {:fill "#41A4E6" :text-anchor "middle"})
-         [:text "Demo not found."]])]
-     
-     [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}}
-      [:a {:href "/"} "<-"]]]))
+(defn component-game [size demo-name]
+  (fn []
+    (let [[ow oh] (map #(int (/ % 2)) @size)]
+      [:div
+       [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"}}
+
+        (component-svg-top (* ow 2))
+
+        [:g {:transform (str "translate(" (int (* (get @size 0) -0.5)) "," (int (* (get @size 1) -0.5)) ")")}
+         [(demos demo-name) size]]]
+
+       [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}}
+        [:a {:href "/"} "<-"]]])))
 
 ;; -------------------------
 ;; Views
@@ -191,7 +167,12 @@
     [:li [:a {:href "/v?old-stuff"} "old stuff"]]]])
 
 (defn component-page-viewer []
-  [component-game (atom [(.-innerWidth js/window) (.-innerHeight js/window)]) (atom 0)])
+  (let [demo-name (get (string/split js/document.location.href "?") 1)
+        size (atom [(.-innerWidth js/window) (.-innerHeight js/window)])]
+    (fn []
+      (if (get demos demo-name)
+        [component-game size demo-name]
+        [:div#contents "Demo not found."]))))
 
 (defn current-page []
   [:div [(session/get :current-page)]])
