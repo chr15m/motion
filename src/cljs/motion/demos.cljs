@@ -9,7 +9,7 @@
 (def styles {:blue-line {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}
              :blue-flat {:fill "#41A4E6" :fill-opacity "0.3" :stroke-linecap "round"}})
 
-(defn component-demo-curved-path [size]
+(defn ^export component-demo-curved-path [size]
   (let [style (styles :blue-line)]
     (fn []
       [:g
@@ -23,7 +23,7 @@
         [component-svg-hexagon style 80 0 40]
         [component-svg-twolines style]]])))
 
-(defn component-demo-circles [size]
+(defn ^export component-demo-circles [size]
   (let [style (styles :blue-line)]
     (fn []
       [:g
@@ -32,7 +32,7 @@
        [component-svg-circle-test-3 style 0 100]
        [component-svg-arc-thing style -100 -100]])))
 
-(defn component-demo-nibblets [size]
+(defn ^export component-demo-nibblets [size]
   (let [style (styles :blue-line)]
     (fn []
       [:g
@@ -48,7 +48,7 @@
        (component-svg-o style -80 120)
        (component-svg-o style -50 150)])))
 
-(defn component-demo-hex-plane [size]
+(defn ^export component-demo-hex-plane [size]
   (let [style-1 (merge (styles :blue-line) {:fill "url(#hatch)"})
         style-2 (styles :blue-flat)]
     (fn []
@@ -58,7 +58,7 @@
         (component-svg-pattern-hatch)]
        [component-svg-hex-plane style-1 style-2]])))
 
-(defn component-demo-orbital-transformer [size]
+(defn ^export component-demo-orbital-transformer [size]
   (let [style (styles :blue-line)]
     [:g style
      [:defs
