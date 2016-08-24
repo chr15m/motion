@@ -44,6 +44,16 @@
    [:path {:d (js/roundPathCorners (str "M 0 45 L 48 45 L 98 5 L " ow " 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
    [:path {:d (js/roundPathCorners (str "M 0 50 L 50 50 L 100 10 L " ow " 10") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]])
 
+(defn component-svg-x [x y]
+  [:g (g-trans x y)
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M -7.5 -7.5 L 7.5 7.5 Z"}]
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 7.5 -7.5 L -7.5 7.5 Z"}]])
+
+(defn component-svg-+ [x y]
+  [:g (g-trans x y)
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0.5 -7.5 L 0.5 7.5 Z"}]
+   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M -7.5 0.5 L 7.5 0.5 Z"}]])
+
 (defn component-svg-circle-test [x y]
   (let [[tl] (timeline js/Infinity)]
     (fn []
@@ -98,16 +108,6 @@
           (component-svg-arc x y 78 (* m.PI -0.25) (* m.PI 0.25) 2)
           (component-svg-arc x y 70 (* m.PI .75) (* m.PI 1.25) 5)
           (component-svg-arc x y 70 (* m.PI -0.25) (* m.PI 0.25) 5)])])))
-
-(defn component-svg-x [x y]
-  [:g (g-trans x y)
-   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 0 L 15 15 Z"}]
-   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 15 0 L 0 15 Z"}]])
-
-(defn component-svg-+ [x y]
-  [:g (g-trans x y)
-   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 7.5 0 L 7.5 15 Z"}]
-   [:path {:fill "none" :stroke "#41A4E6" :stroke-width "1" :d "M 0 7.5 L 15 7.5 Z"}]])
 
 (defn component-demo-nibblets [size]
   (fn []
