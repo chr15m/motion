@@ -67,11 +67,11 @@
   (let [t-scale 0.1
         [tl] (timeline js/Infinity)]
     (fn []
-      (let [t (/ @tl 10)]
+      (let [t (/ @tl 30)]
         [:g (g-trans x y)
-         [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ t 100) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
-         [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ t 200) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
-         [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.sin (* (+ t 300) t-scale)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))))
+         [:circle {:cx 0 :cy 0 :r 30 :fill "none" :stroke "#41A4E6" :stroke-width "2px"}]
+         [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.tanh (* (m.sin (* (+ t 1) t-scale)) 2)) 10)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]
+         [:circle {:cx 0 :cy 0 :r (+ 37 (* (m.tanh (* (m.sin (* (+ t 10) t-scale)) 2)) 7)) :fill "none" :stroke "#41A4E6" :stroke-width "1px"}]]))))
 
 (defn component-svg-circle-test-3 [x y]
   (let [duration 2000
@@ -82,7 +82,8 @@
     (fn []
       (if @g
         [:g (g-trans x y)
-         [:circle {:cx 0 :cy 0 :r (+ (/ @t 20) 3) :fill "none" :stroke "#41A4E6" :stroke-opacity (- 1 (/ @t duration)) :stroke-width "2px"}]]))))
+          (component-svg-x 0 0)
+          [:circle {:cx 0 :cy 0 :r (+ (/ @t 20) 15) :fill "none" :stroke "#41A4E6" :stroke-opacity (- 1 (/ @t duration)) :stroke-width "2px"}]]))))
 
 (defn component-svg-arc [x y r as ae th]
   [:g (g-trans x y)
