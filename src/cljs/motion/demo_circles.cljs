@@ -1,7 +1,7 @@
 (ns motion.demo-circles
   (:require [cljs.core.async :refer [<! close! timeout chan] :as async]
             [motion.utils :refer [timeline g-trans svg-arc]]
-            [motion.nibblets :refer [component-svg-x]])
+            [motion.demo-nibblets :refer [component-svg-x]])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
 (def m js/Math)

@@ -1,6 +1,6 @@
 (ns motion.demos
   (:require [motion.fx :refer [component-svg-filter-glow component-svg-pattern-hatch]]
-            [motion.nibblets :refer [component-svg-x component-svg-+]]
+            [motion.demo-nibblets :refer [component-svg-x component-svg-+ component-svg-o]]
             [motion.demo-circles :refer [component-svg-circle-test component-svg-circle-test-2 component-svg-circle-test-3 component-svg-arc-thing]]
             [motion.demo-curved-path :refer [component-svg-path-1 component-svg-hex-thing component-svg-hexagon component-svg-twolines]]))
 
@@ -36,9 +36,14 @@
        (component-svg-x style 90 30)
        (component-svg-x style 140 20)
        (component-svg-x style 120 40)
+
        (component-svg-+ style -100 -100)
        (component-svg-+ style -130 -130)
-       (component-svg-+ style -90 -150)])))
+       (component-svg-+ style -90 -150)
+       
+       (component-svg-o style -50 100)
+       (component-svg-o style -80 120)
+       (component-svg-o style -50 150)])))
 
 (def demos {"curved path" component-demo-curved-path
             "circles" component-demo-circles
