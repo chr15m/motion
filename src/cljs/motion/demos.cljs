@@ -62,8 +62,10 @@
   (let [style (styles :blue-line)]
     [:g style
      [:defs
+      (component-svg-filter-glow)
       (component-svg-pattern-hatch)]
      [component-svg-hexagon (assoc style :fill "url(#hatch)") 0 0 40]
+     [:circle {:cx 0 :cy 0 :r 45}]
      [component-orbiter style 0 0]]))
 
 (def demos {"curved path" component-demo-curved-path

@@ -19,7 +19,8 @@
     (fn []
       (let [t (/ @tl 3000)
             t2 (/ @tl 500)
-            unfolded (deref (unfolder :time))]
+            unfolded (deref (unfolder :time))
+            style-alert (merge style (if (> unfolded 1800) {:stroke "#BB5C3F"} {}))]
         [:g
          [:text {:x 0 :y 100} (deref (unfolder :go))]
          [:circle {:cx 0 :cy 0 :r distance}]
@@ -32,15 +33,19 @@
             [:path {:d (str "M 21 -21 L 70 -70" (if (> unfolded 2000) "L 200 -70" "")) :stroke-width "2px"}])
           (when (> unfolded 0)
             [:g (if (> unfolded 900) {:transform (str "rotate(" (m.min 90 (/ (- unfolded 900) 10)) ")")})
-             (component-svg-arc style 0 0 70 (* m.PI .75) (* m.PI 1.25) 5)
-             (component-svg-arc style 0 0 70 (* m.PI -0.25) (* m.PI 0.25) 5)])
+             (component-svg-arc style-alert 0 0 70 (* m.PI .75) (* m.PI 1.25) 5)
+             (component-svg-arc style-alert 0 0 70 (* m.PI -0.25) (* m.PI 0.25) 5)])
           (when (> unfolded 300)
             [:g
-             (component-svg-arc style 0 0 78 (* m.PI .75) (* m.PI 1.25) 2)
-             (component-svg-arc style 0 0 78 (* m.PI -0.25) (* m.PI 0.25) 2)]) 
+             (component-svg-arc style-alert 0 0 78 (* m.PI .75) (* m.PI 1.25) 2)
+             (component-svg-arc style-alert 0 0 78 (* m.PI -0.25) (* m.PI 0.25) 2)]) 
           (when (> unfolded 600)
             [:g
-             (component-svg-arc style 0 0 85 (* m.PI .75) (* m.PI 1.25) 2)
-             (component-svg-arc style 0 0 85 (* m.PI -0.25) (* m.PI 0.25) 2)])
+             (component-svg-arc style-alert 0 0 85 (* m.PI .75) (* m.PI 1.25) 2)
+             (component-svg-arc style-alert 0 0 85 (* m.PI -0.25) (* m.PI 0.25) 2)])
           (when (and (> unfolded 2200) (or (= (mod (int (/ unfolded 100)) 2) 1) (> unfolded 3800)))
-            [:path {:d (str "M 73 -80 L 197 -80") :stroke-width "5px"}])]]))))
+            [:g
+             [:path {:d (str "M 73 -78 L 197 -78") :stroke-width "5px" :stroke "#BB5C3F"}]       
+             [:path {:d (str "M 73 -88 L 197 -88") :stroke-width "5px" :stroke "#BBAA3F"}]
+             [:path {:d (str "M 73 -98 L 197 -98") :stroke-width "5px" :stroke "#3FBB3F"}]
+             [:path {:d (str "M 73 -108 L 197 -108") :stroke-width "5px"}]])]]))))
