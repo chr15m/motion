@@ -32,7 +32,7 @@
          [(demos/demos demo-name) size]]]
 
        [:div {:style {:top "10px" :left "18px" :position "absolute" :font-size "20px" :padding "0px"}}
-        [:a {:href "/"} "<-"]]])))
+        [:a {:href "../"} "<-"]]])))
 
 ;; -------------------------
 ;; Views
@@ -41,7 +41,7 @@
   [:div#contents [:h2 "demos"]
    [:ul
     (doall (for [[d f] demos/demos]
-             [:li {:key d} [:a {:href (str "/v?" d)} d]]))]])
+             [:li {:key d} [:a {:href (str "v?" d)} d]]))]])
 
 (defn component-page-viewer []
   (let [demo-name (js/unescape (get (string/split js/document.location.href "?") 1))
@@ -57,10 +57,10 @@
 ;; -------------------------
 ;; Routes
 
-(secretary/defroute "/" []
+(secretary/defroute #"(.*)/$" []
   (session/put! :current-page #'component-page-contents))
 
-(secretary/defroute "/v" []
+(secretary/defroute #"(.*)/v$" []
   (session/put! :current-page #'component-page-viewer))
 
 ;; -------------------------

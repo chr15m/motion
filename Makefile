@@ -18,6 +18,7 @@ $(APP): src/clj*/** project.clj
 
 $(IDX): src/clj/**/handler.clj
 	dev=no lein index-html > $(IDX)
+	cp -av $(IDX) build/v.html
 
 $(FNT): resources/public/fonts/**/*
 	cp -av resources/public/fonts build/fonts
