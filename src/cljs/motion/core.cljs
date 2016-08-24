@@ -28,7 +28,7 @@
 
         (component-svg-top (* ow 2))
 
-        [:g (g-trans ow oh)
+       [:g (g-trans ow oh)
          [(demos/demos demo-name) size]]]
 
        [:div {:style {:top "10px" :left "18px" :position "absolute" :font-size "20px" :padding "0px"}}
