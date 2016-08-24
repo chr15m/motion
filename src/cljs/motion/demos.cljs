@@ -2,9 +2,11 @@
   (:require [motion.fx :refer [component-svg-filter-glow component-svg-pattern-hatch]]
             [motion.demo-nibblets :refer [component-svg-x component-svg-+ component-svg-o]]
             [motion.demo-circles :refer [component-svg-circle-test component-svg-circle-test-2 component-svg-circle-test-3 component-svg-arc-thing]]
-            [motion.demo-curved-path :refer [component-svg-path-1 component-svg-hex-thing component-svg-hexagon component-svg-twolines]]))
+            [motion.demo-curved-path :refer [component-svg-path-1 component-svg-hex-thing component-svg-hexagon component-svg-twolines]]
+            [motion.demo-hex-plane :refer [component-svg-hex-plane]]))
 
-(def styles {:blue-line {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}})
+(def styles {:blue-line {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}
+             :blue-flat {:fill "#41A4E6" :fill-opacity "0.3" :stroke-linecap "round"}})
 
 (defn component-demo-curved-path [size]
   (let [style (styles :blue-line)]
@@ -45,6 +47,17 @@
        (component-svg-o style -80 120)
        (component-svg-o style -50 150)])))
 
+(defn component-demo-hex-plane [size]
+  (let [style-1 (merge (styles :blue-line) {:fill "url(#hatch)"})
+        style-2 (styles :blue-flat)]
+    (fn []
+      [:g
+       [:defs
+        (component-svg-filter-glow)
+        (component-svg-pattern-hatch)]
+       [component-svg-hex-plane style-1 style-2]])))
+
 (def demos {"curved path" component-demo-curved-path
             "circles" component-demo-circles
-            "nibblets" component-demo-nibblets})
+            "nibblets" component-demo-nibblets
+            "hex plane" component-demo-hex-plane})

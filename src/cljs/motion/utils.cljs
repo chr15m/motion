@@ -17,6 +17,20 @@
   [(+ cx (* r (m.cos a)))
    (+ cy (* r (m.sin a)))])
 
+(defn hexagon [r pointy?]
+  (let [seg (/ m.PI 3)]
+    (map
+      #(let [a (+ (* % seg) (if pointy? 0 (/ seg 2)))]
+         (str
+           (m.round (* r (m.sin a)))
+           " "
+           (m.round (* r (m.cos a)))))
+      (range 6))))
+
+(defn hex-pos [size c r]
+  [(* size 2 (/ (float 3) 4) c)
+   (+ (* (mod c 2) (/ (m.sqrt 3) 2) size) (* r size (/ (m.sqrt 3) 2) 2))])
+
 (defn svg-arc [cx cy r as ae]
   (let [[xs ys] (pol2crt cx cy r (+ (mod ae tau) tau))
         [xe ye] (pol2crt cx cy r (+ (mod as tau) tau))
