@@ -10,20 +10,20 @@
   (let [[tl] (timeline js/Infinity)]
     (fn []
       (let [t (/ @tl 500)]
-        [:g (g-trans x y)
-         [:circle (merge style {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 1)) 10))})]
-         [:circle (merge style {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 1.5)) 10))})]
-         [:circle (merge style {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 2)) 10))})]]))))
+        [:g (merge style (g-trans x y))
+         [:circle {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 1)) 10))}]
+         [:circle {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 1.5)) 10))}]
+         [:circle {:cx 0 :cy 0 :r (+ 45 (* (m.sin (+ t 2)) 10))}]]))))
 
 (defn component-svg-circle-test-2 [style x y]
   (let [t-scale 0.1
         [tl] (timeline js/Infinity)]
     (fn []
       (let [t (/ @tl 30)]
-        [:g (g-trans x y)
-         [:circle (merge style {:cx 0 :cy 0 :r 30 :stroke-width "2px"})]
-         [:circle (merge style {:cx 0 :cy 0 :r (+ 40 (* (m.tanh (* (m.sin (* (+ t 1) t-scale)) 2)) 10))})]
-         [:circle (merge style {:cx 0 :cy 0 :r (+ 37 (* (m.tanh (* (m.sin (* (+ t 10) t-scale)) 2)) 7))})]]))))
+        [:g (merge style (g-trans x y))
+         [:circle {:cx 0 :cy 0 :r 30 :stroke-width "2px"}]
+         [:circle {:cx 0 :cy 0 :r (+ 40 (* (m.tanh (* (m.sin (* (+ t 1) t-scale)) 2)) 10))}]
+         [:circle {:cx 0 :cy 0 :r (+ 37 (* (m.tanh (* (m.sin (* (+ t 10) t-scale)) 2)) 7))}]]))))
 
 (defn component-svg-circle-test-3 [style x y]
   (let [duration 2000
@@ -41,7 +41,7 @@
   (let [[t] (timeline js/Infinity)]
     (fn []
       (let [p (* m.PI 2 (/ (mod @t 2000) 2000))]
-        [:g (g-trans x y)
-         [:path (merge style {:d (svg-arc 0 0 51 (- p 1) p) :stroke-width "5px"})]
-         [:circle (merge style {:cx 0 :cy 0 :r 57 :stroke-width "3px"})]     
-         [:circle (merge style {:cx 0 :cy 0 :r 53 :stroke-width "1px"})]]))))
+        [:g (merge style (g-trans x y))
+         [:path {:d (svg-arc 0 0 51 (- p 1) p) :stroke-width "5px"}]
+         [:circle {:cx 0 :cy 0 :r 57 :stroke-width "3px"}]     
+         [:circle {:cx 0 :cy 0 :r 53 :stroke-width "1px"}]]))))

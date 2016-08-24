@@ -31,7 +31,7 @@
         [:g (g-trans ow oh)
          [(demos/demos demo-name) size]]]
 
-       [:div {:style {:top "10px" :left "10px" :position "absolute" :font-size "20px" :padding "0px"}}
+       [:div {:style {:top "10px" :left "18px" :position "absolute" :font-size "20px" :padding "0px"}}
         [:a {:href "/"} "<-"]]])))
 
 ;; -------------------------
