@@ -15,9 +15,10 @@
 ;; Components
 
 (defn component-svg-top [ow]
-  [:g
-   [:path {:d (js/roundPathCorners (str "M 0 45 L 48 45 L 98 5 L " ow " 5") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
-   [:path {:d (js/roundPathCorners (str "M 0 50 L 50 50 L 100 10 L " ow " 10") 5 false) :fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]])
+  (let [style {:fill "none" :stroke "#555" :stroke-width "2px" :stroke-linecap "round"}]
+    [:g
+     [:path (merge style {:d (js/roundPathCorners (str "M 0 45 L 48 45 L 98 5 L " ow " 5") 5 false)})]
+     [:path (merge style {:d (js/roundPathCorners (str "M 0 50 L 50 50 L 100 10 L " ow " 10") 5 false)})]]))
 
 (defn component-svg-main [size demo-name]
   (fn []
