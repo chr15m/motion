@@ -32,7 +32,7 @@
          [(demos/demos demo-name) size]]]
 
        [:div {:style {:top "10px" :left "18px" :position "absolute" :font-size "20px" :padding "0px"}}
-        [:a {:href "../"} "<-"]]])))
+        [:a {:href (str (get (string/split js/document.location.href "/v") 0) "/")} "<-"]]])))
 
 ;; -------------------------
 ;; Views
