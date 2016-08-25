@@ -49,7 +49,7 @@
                    l-next (now)]
                (if (< old-time duration)
                  (do
-                   (swap! (atoms :time) #(+ % (- l-next l)))
+                   (swap! (atoms :time) + (- l-next l))
                    (recur l-next))
                  (do
                    (reset! (atoms :time) duration)
