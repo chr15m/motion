@@ -39,6 +39,14 @@
               "A" r r 0 direction 0 (m.round xe) (m.round ye)]]
     (clojure.string/join " " path)))
 
+(defn svg-path [points & [closed?]]
+  (clojure.string/join " "
+    (apply concat
+           ["M"]
+           (concat
+             (interpose '("L") (partition 2 points))
+             (if closed? "Z" nil)))))
+
 (defn timeline [duration & {:keys [atoms interval] :or {atoms {:time (atom 0) :go (atom true)} interval 16}}]
   (let [c (chan)]
     (reset! (atoms :time) 0)
