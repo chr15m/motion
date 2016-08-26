@@ -4,7 +4,8 @@
             [motion.demo-circles :refer [component-svg-circle-test component-svg-circle-test-2 component-svg-circle-test-3 component-svg-arc-thing]]
             [motion.demo-curved-path :refer [component-svg-path-1 component-svg-hex-thing component-svg-hexagon component-svg-twolines]]
             [motion.demo-hex-plane :refer [component-svg-hex-plane]]
-            [motion.demo-orbital-transformer :refer [component-orbiter]]))
+            [motion.demo-orbital-transformer :refer [component-orbiter]]
+            [motion.demo-path-unfold :refer [component-unfolder]]))
 
 (def styles {:blue-line {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}
              :blue-flat {:fill "#41A4E6" :fill-opacity "0.3" :stroke-linecap "round"}})
@@ -68,8 +69,14 @@
      [:circle {:cx 0 :cy 0 :r 45}]
      [component-orbiter style 0 0]]))
 
+(defn ^export component-demo-path-unfold [size]
+  (let [style (styles :blue-line)]
+    [:g style
+     [component-unfolder style 0 0]]))
+
 (def demos {"curved path" component-demo-curved-path
             "circles" component-demo-circles
             "nibblets" component-demo-nibblets
             "hex plane" component-demo-hex-plane
+            "path unfold" component-demo-path-unfold
             "interactive: orbital transformer" component-demo-orbital-transformer})
