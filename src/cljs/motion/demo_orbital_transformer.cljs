@@ -1,7 +1,6 @@
 (ns motion.demo-orbital-transformer
   (:require [motion.utils :refer [timeline]]
-            [motion.components :refer [component-svg-arc]]
-            ))
+            [motion.components :refer [component-svg-arc]]))
 
 (def m js/Math)
 
