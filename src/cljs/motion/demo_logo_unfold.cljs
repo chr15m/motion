@@ -41,17 +41,8 @@
          [:g
           [:path {:d (js/roundPathCorners (svg-path (partial-path t [ 53  43   107  96    107  193])) 5 false) :stroke-width "2px"}]
           [:path {:d (js/roundPathCorners (svg-path (partial-path t [ 50  50   100  100   100  193])) 5 false) :stroke-width "2px"}]
-
           [:path {:d (js/roundPathCorners (svg-path (partial-path t [-53  43  -107  96   -107  193])) 5 false) :stroke-width "2px"}]
-          [:path {:d (js/roundPathCorners (svg-path (partial-path t [-50  50  -100  100  -100  193])) 5 false) :stroke-width "2px"}]
-
-          ;[:path {:d (js/roundPathCorners (svg-path (partial-path t [ 53  43   103  93    180  93])) 5 false) :stroke-width "2px"}]
-          ;[:path {:d (js/roundPathCorners (svg-path (partial-path t [ 50  50   100  100   180  100])) 5 false) :stroke-width "2px"}]
-          ;[:path {:d (js/roundPathCorners (svg-path (partial-path t [-53 -43  -103 -93   -180 -93])) 5 false) :stroke-width "2px"}]
-          ;[:path {:d (js/roundPathCorners (svg-path (partial-path t [-50 -50  -100 -100  -180 -100])) 5 false) :stroke-width "2px"}]
-
-          ;[:path {:d (js/roundPathCorners (svg-path (partial-path t [ 50  0   100  0   120 20   180  20])) 5 false) :stroke-width "2px"}]
-          ]
+          [:path {:d (js/roundPathCorners (svg-path (partial-path t [-50  50  -100  100  -100  193])) 5 false) :stroke-width "2px"}]]
          (if (or (= (mod (int (/ u 100)) 2) 1) (> u 1000))
            [:g (merge style-2 {:stroke "none"})
             [:g

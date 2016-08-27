@@ -39,4 +39,23 @@ a:hover {
   box-sizing: border-box;
 }
 
+svg * {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+svg *::selection {
+  background: none;
+}
+
+svg text {
+    -webkit-user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
+}
+svg text::selection {
+    background: text;
 }
