@@ -82,14 +82,15 @@
              (<! (timeout interval))
              (let [old-time (deref (atoms :time))
                    l-next (now)]
-               (if (< old-time duration)
-                 (do
-                   (swap! (atoms :time) + (- l-next l))
-                   (recur l-next))
-                 (do
-                   (reset! (atoms :time) duration)
-                   (reset! (atoms :go) false)
-                   (close! c)))))
+               (if (deref (atoms :go))
+                 (if (< old-time duration)
+                   (do
+                     (swap! (atoms :time) + (- l-next l))
+                     (recur l-next))
+                   (do
+                     (reset! (atoms :time) duration)
+                     (reset! (atoms :go) false)
+                     (close! c))))))
     [(atoms :time) (atoms :go) c]))
 
 (defn g-trans [x y]
