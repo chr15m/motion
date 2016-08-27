@@ -34,4 +34,9 @@ a:hover {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  box-sizing: border-box;
+}
+
 }
