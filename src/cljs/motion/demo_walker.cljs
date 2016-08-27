@@ -20,16 +20,17 @@
 (defn component-walker [style-1 style-2 position timeline]
     (let [helmet-path (str "M 15.5 -60.5 L -15.5 -60.5"
                          " "
-                         (js/roundPathCorners "M -15.5 -60.5 L -15.5 -95.5 L 15.5 -95.5 L 15.5 -60.5" 15 false))]
+                         (js/roundPathCorners "M -15.5 -60.5 L -15.5 -95.5 L 15.5 -95.5 L 15.5 -60.5" 15 false))
+          helmet-shine (js/roundPathCorners "M -11.5 -80.5 L -11.5 -91.5 L 0 -91.5" 15 false)]
       (fn []
         (let [frame (mod (int (/ @timeline 150)) 2)
               legs-frame frame
               arms-frame frame]
           [:g (merge style-1 {:stroke-width "2px" :transform (str "translate(" (first @position) "," (second @position) ")")})
            ; head
-           [:g style-2
-            [:path {:d helmet-path}]
-            [:path {:d (js/roundPathCorners "M -11.5 -80.5 L -11.5 -91.5 L 0 -91.5" 15 false) :fill "none" :stroke "#383838" :stroke-width "3px"}]]
+           [:g
+            [:path {:d helmet-path :fill "#3A586C"}]
+            [:path {:d helmet-shine :fill "none" :stroke "#383838" :stroke-width "3px"}]]
            ; arms
            (if (= @timeline 0)
              (arms-1)

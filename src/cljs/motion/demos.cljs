@@ -13,6 +13,8 @@
 (def styles {:blue-line {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}
              :blue-flat {:fill "#41A4E6" :fill-opacity "0.3" :stroke-linecap "round"}})
 
+(def colors {:blue "#41A4E6" :background "#383838"})
+
 (defn ^export component-demo-curved-path [size]
   (let [style (styles :blue-line)]
     (fn []
@@ -91,7 +93,7 @@
     (fn []
       [:g style-1
        [:defs
-        (component-svg-pattern-hatch)]
+        (component-svg-pattern-hatch "hatch" (colors :blue) "#383838")]
        [component-walker-demo-world style-1 style-2]])))
 
 (def demos {"curved path" component-demo-curved-path
