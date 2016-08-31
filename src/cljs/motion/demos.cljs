@@ -1,5 +1,6 @@
 (ns motion.demos
   (:require [motion.fx :refer [component-svg-filter-glow component-svg-pattern-hatch]]
+            [motion.shapes :refer [shapes]]
             [motion.utils :refer [timeline]]
             [motion.demo-nibblets :refer [component-svg-x component-svg-+ component-svg-o]]
             [motion.demo-circles :refer [component-svg-circle-test component-svg-circle-test-2 component-svg-circle-test-3 component-svg-arc-thing]]
@@ -104,9 +105,24 @@
         (component-svg-pattern-hatch "hatch" (colors :blue) "#383838")]
        [component-walker-demo-world style-1 style-2]])))
 
+(defn ^export component-iconography [size]
+  [:g
+   [:defs
+    (component-svg-pattern-hatch "hatch" (colors :blue) "#383838")]
+   [:g (merge (styles :blue-line) (styles :blue-flat) {:stroke-width "2px"})
+    [:g {:transform "translate(-200,100)"}
+     (shapes :rocket)]
+    [:g {:transform "translate(0,-200)" :fill (colors :blue)}
+     (shapes :wreath)
+     [:g {:transform "scale(-1,1)"}
+      (shapes :wreath)]]
+    [:g {:transform "translate(200,100)"}
+     (shapes :temple)]]])
+
 (def demos {"curved path" component-demo-curved-path
             "circles" component-demo-circles
             "nibblets" component-demo-nibblets
+            "iconography" component-iconography
             "hex plane" component-demo-hex-plane
             "path unfold" component-demo-path-unfold
             "interactive: orbital transformer" component-demo-orbital-transformer
