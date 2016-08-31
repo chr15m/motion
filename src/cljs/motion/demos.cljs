@@ -119,14 +119,14 @@
     [:g {:transform "translate(200,100)"}
      (shapes :temple)]]])
 
-(def demos {"curved path" component-demo-curved-path
-            "circles" component-demo-circles
+(def demos ["circles" component-demo-circles
             "nibblets" component-demo-nibblets
             "iconography" component-iconography
-            "hex plane" component-demo-hex-plane
-            "path unfold" component-demo-path-unfold
+            "test: curved path" component-demo-curved-path
+            "test: hex plane" component-demo-hex-plane
+            "test: path unfold" component-demo-path-unfold
             "interactive: orbital transformer" component-demo-orbital-transformer
             "interactive: logo unfold" component-demo-logo-unfold
             "interactive: logo unfold #2" component-demo-logo-unfold-2
-            "interactive: walker" component-demo-walker})
+            "interactive: walker" component-demo-walker])
 

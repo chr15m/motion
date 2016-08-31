@@ -20,7 +20,7 @@
      [:path (merge style {:d (js/roundPathCorners (str "M 0 45 L 48 45 L 98 5 L " ow " 5") 5 false)})]
      [:path (merge style {:d (js/roundPathCorners (str "M 0 50 L 50 50 L 100 10 L " ow " 10") 5 false)})]]))
 
-(defn component-svg-main [size demo-name]
+(defn component-svg-main [size demo demo-name]
   (fn []
     (let [[ow oh] (map #(int (/ % 2)) @size)]
       [:div
@@ -29,7 +29,7 @@
         (component-svg-top (* ow 2))
 
        [:g (g-trans ow oh)
-         [(demos/demos demo-name) size]]]
+         [demo size]]]
 
        [:div {:style {:top "10px" :left "18px" :position "absolute" :font-size "20px" :padding "0px"}}
         [:a {:href (str (get (string/split js/document.location.href "/v") 0) "/")} "<-"]]])))
@@ -39,16 +39,18 @@
 
 (defn component-page-contents []
   [:div#contents [:h2 "demos"]
-   [:ul
-    (doall (for [[d f] demos/demos]
-             [:li {:key d} [:a {:href (str "v?" d)} d]]))]])
+   [:ol
+    (doall (map (fn [[d f]]
+                  [:li {:key d} [:a {:href (str "v?" d)} d]])
+                (partition 2 demos/demos)))]])
 
 (defn component-page-viewer []
   (let [demo-name (js/unescape (get (string/split js/document.location.href "?") 1))
-        size (atom [(.-innerWidth js/window) (.-innerHeight js/window)])]
+        size (atom [(.-innerWidth js/window) (.-innerHeight js/window)])
+        demo (get (apply hash-map demos/demos) demo-name)]
     (fn []
-      (if (get demos/demos demo-name)
-        [component-svg-main size demo-name]
+      (if demo
+        [component-svg-main size demo demo-name]
         [:div#contents "Demo not found."]))))
 
 (defn current-page []
@@ -79,3 +81,4 @@
        (secretary/locate-route path))})
   (accountant/dispatch-current!)
   (mount-root))
+
