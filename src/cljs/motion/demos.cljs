@@ -25,9 +25,9 @@
         (component-svg-pattern-hatch)]
        [:g
         [component-svg-path-1 style 0 -100]
-        [component-svg-hex-thing style -80 0]
-        [component-svg-hexagon style 180 0 40]
-        [component-svg-hexagon style 80 0 40]
+        [component-svg-hex-thing style -140 0]
+        [component-svg-hexagon style 150 0 40]
+        [component-svg-hexagon style 50 0 40]
         [component-svg-twolines style]]])))
 
 (defn ^export component-demo-circles [size]
