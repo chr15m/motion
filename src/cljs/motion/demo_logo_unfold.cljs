@@ -38,3 +38,28 @@
           [:text {:y 150 :text-anchor "middle"} "veritate"]
           [:text {:y 200 :text-anchor "middle"} "ad astra"]]]))))
 
+(defn component-logo-unfold-2 [style-1 style-2 size x y]
+  (let [unfolder {:time (atom 0) :go (atom false)}]
+    (fn []
+      (let [u (deref (unfolder :time))
+            p (m.min (/ u 1000) 1)
+            w (/ (get @size 0) 2)]
+        [:g
+         (if (= u 0) [:g {:on-click (partial handle-planet-click unfolder)}
+                      [:circle {:cx 0 :cy 0 :r 50 :fill (if (> u 0) "url(#hatch)" "#383838") :stroke-width "2px"}]])
+         (when (> u 0)
+           [:g {:stroke "#3A586C"}
+            [:path {:d (js/roundPathCorners (svg-path (partial-path p [ 35  25   65  55  w 55])) 5 false) :stroke-width "5px"}]
+            [:path {:d (js/roundPathCorners (svg-path (partial-path p [ 25  35   58  69  w 69])) 5 false) :stroke-width "5px"}]
+            [:path {:d (js/roundPathCorners (svg-path (partial-path p [ -35  -25   -65  -55  (* -1 w) -55])) 5 false) :stroke-width "5px"}]
+            [:path {:d (js/roundPathCorners (svg-path (partial-path p [ -25  -35   -58  -69  (* -1 w) -69])) 5 false) :stroke-width "5px"}]])
+         (when (> u 0)
+           [:g (merge style-2 {:stroke "none" :transform "translate(0,-30)" :fill "#3A586C" :fill-opacity p})
+            [:g
+             (shapes :wreath)]
+            [:g {:transform "scale(-1,1)"}
+             (shapes :wreath)]])
+         (when (> u 0)
+           [:g 
+            [:g {:stroke-width 2 :transform "scale(1.33,1.33),translate(-75,75),rotate(45)" :fill "#383838" :fill-opacity p :stroke-opacity p}
+                      (shapes :rocket)]])]))))

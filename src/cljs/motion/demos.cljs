@@ -7,7 +7,7 @@
             [motion.demo-hex-plane :refer [component-svg-hex-plane]]
             [motion.demo-orbital-transformer :refer [component-orbiter]]
             [motion.demo-path-unfold :refer [component-unfolder]]
-            [motion.demo-logo-unfold :refer [component-logo-unfold]]
+            [motion.demo-logo-unfold :refer [component-logo-unfold component-logo-unfold-2]]
             [motion.demo-walker :refer [component-walker-demo-world]]))
 
 (def styles {:blue-line {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}
@@ -87,6 +87,14 @@
       (component-svg-pattern-hatch)]
      [component-logo-unfold style-1 style-2 0 0]]))
 
+(defn ^export component-demo-logo-unfold-2 [size]
+  (let [style-1 (styles :blue-line)
+        style-2 (styles :blue-flat)]
+    [:g style-1
+     [:defs
+      (component-svg-pattern-hatch)]
+     [component-logo-unfold-2 style-1 style-2 size 0 0]]))
+
 (defn ^export component-demo-walker [size]
   (let [style-1 (styles :blue-line)
         style-2 (styles :blue-flat)]
@@ -103,5 +111,6 @@
             "path unfold" component-demo-path-unfold
             "interactive: orbital transformer" component-demo-orbital-transformer
             "interactive: logo unfold" component-demo-logo-unfold
+            "interactive: logo unfold #2" component-demo-logo-unfold-2
             "interactive: walker" component-demo-walker})
 
