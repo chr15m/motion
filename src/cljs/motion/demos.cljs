@@ -34,10 +34,10 @@
   (let [style (styles :blue-line)]
     (fn []
       [:g
-       [component-svg-circle-test style 150 -100]
-       [component-svg-circle-test-2 style -200 50]
-       [component-svg-circle-test-3 style 0 100]
-       [component-svg-arc-thing style -100 -100]])))
+       [component-svg-circle-test style 120 -100]
+       [component-svg-circle-test-2 style -120 50]
+       [component-svg-circle-test-3 style 50 100]
+       [component-svg-arc-thing style -100 -150]])))
 
 (defn ^export component-demo-nibblets [size]
   (let [style (styles :blue-line)]
