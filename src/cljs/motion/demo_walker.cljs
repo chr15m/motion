@@ -48,7 +48,6 @@
                1 [:path {:d "M -10.5 0 L -7.5 -30.5 L 7.5 -30.5 L 10.5 0"}]))]))))
 
 (defn component-walker-hex-map [style-1 style-2 style-3 click-channel]
-  (print "click-pre" click-channel)
   (let [selected (atom nil)
         size 50]
     (fn []
@@ -62,7 +61,7 @@
                      :key (str "hex-" c "-" r)
                      :on-mouse-over (fn [ev] (reset! selected [c r]) nil)
                      :on-mouse-out (fn [ev] (reset! selected nil) nil)
-                     :on-click (fn [ev] (print "putting" [x y]) (put! click-channel [x y]) (reset! selected [c r]) nil))
+                     :on-click (fn [ev] (put! click-channel [x y]) (reset! selected [c r]) nil))
               x y (* size 0.95)])))])))
 
 (defn component-walker-demo-world [style-1 style-2]
