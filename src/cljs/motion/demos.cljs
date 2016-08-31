@@ -128,5 +128,6 @@
             "interactive: orbital transformer" component-demo-orbital-transformer
             "interactive: logo unfold" component-demo-logo-unfold
             "interactive: logo unfold #2" component-demo-logo-unfold-2
-            "interactive: walker" component-demo-walker])
+            ;"interactive: walker" component-demo-walker
+            ])
 
