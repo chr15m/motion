@@ -6,8 +6,9 @@ APP=build/js/app.js
 IDX=build/index.html
 FNT=build/fonts
 DEP=build/js/rounding.js
+SYM=build/v.html
 
-all: $(APP) $(CSS) $(IDX) $(FNT) $(DEP)
+all: $(APP) $(CSS) $(IDX) $(SYM) $(FNT) $(DEP)
 
 $(CSS): resources/public/css/*.css
 	$(LEIN) minify-assets
@@ -18,7 +19,9 @@ $(APP): src/clj*/** project.clj
 
 $(IDX): src/clj/**/handler.clj
 	dev=no lein index-html > $(IDX)
-	cp -av $(IDX) build/v.html
+
+$(SYM): $(IDX)
+	ln -s $(shell basename $(IDX)) $@
 
 $(FNT): resources/public/fonts/**/*
 	cp -av resources/public/fonts build/fonts
