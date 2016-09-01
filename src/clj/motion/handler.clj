@@ -14,7 +14,7 @@
   [:head
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
-           :content "width=device-width, initial-scale=1"}]
+           :content "width=device-width, initial-scale=0.75, maximum-scale=1.0, user-scalable=no"}]
    (include-css (if (= (env :dev) true) "css/spinner.css" "css/spinner.min.css"))
    (include-css (if (= (env :dev) true) "css/site.css" "css/site.min.css"))])
 
