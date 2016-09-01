@@ -1,6 +1,6 @@
 (ns motion.core
     (:require [reagent.core :as reagent :refer [atom]]
-              [cljs.core.async :refer [<! close! timeout chan] :as async]
+              [cljs.core.async :refer [<! put! close! timeout chan] :as async]
               [clojure.string :as string]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
@@ -21,18 +21,19 @@
      [:path (merge style {:d (js/roundPathCorners (str "M 0 50 L 50 50 L 100 10 L " ow " 10") 5 false)})]]))
 
 (defn component-svg-main [size demo demo-name]
+  (let [event-chan (chan)]
   (fn []
     (let [[ow oh] (map #(int (/ % 2)) @size)]
       [:div
-       [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"}}
+       [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"} :on-click (fn [ev] (put! event-chan ["click" [(- (.-clientX ev) ow) (- (.-clientY ev) oh)]]))}
 
         (component-svg-top (* ow 2))
 
        [:g (g-trans ow oh)
-         [demo size]]]
+         [demo size event-chan]]]
 
        [:div {:style {:top "10px" :left "18px" :position "absolute" :font-size "20px" :padding "0px"}}
-        [:a {:href (str (get (string/split js/document.location.href "/v") 0) "/")} "<-"]]])))
+        [:a {:href (str (get (string/split js/document.location.href "/v") 0) "/")} "<-"]]]))))
 
 ;; -------------------------
 ;; Views

@@ -12,7 +12,7 @@
             [motion.demo-logo-unfold :refer [component-logo-unfold component-logo-unfold-2]]
             [motion.demo-walker :refer [component-walker-demo-world]]))
 
-(defn ^export component-demo-curved-path [size]
+(defn ^export component-demo-curved-path [size event-chan]
   (let [style (styles :blue-line)]
     (fn []
       [:g
@@ -26,7 +26,7 @@
         [component-svg-hexagon style 50 0 40]
         [component-svg-twolines style]]])))
 
-(defn ^export component-demo-circles [size]
+(defn ^export component-demo-circles [size event-chan]
   (let [style (styles :blue-line)]
     (fn []
       [:g
@@ -35,7 +35,7 @@
        [component-svg-circle-test-3 style 50 100]
        [component-svg-arc-thing style -100 -150]])))
 
-(defn ^export component-demo-nibblets [size]
+(defn ^export component-demo-nibblets [size event-chan]
   (let [style (styles :blue-line)]
     (fn []
       [:g
@@ -51,7 +51,7 @@
        (component-svg-o style -80 120)
        (component-svg-o style -50 150)])))
 
-(defn ^export component-demo-hex-plane [size]
+(defn ^export component-demo-hex-plane [size event-chan]
   (let [style-1 (merge (styles :blue-line) {:fill "url(#hatch)"})
         style-2 (styles :blue-flat)]
     (fn []
@@ -61,7 +61,7 @@
         (component-svg-pattern-hatch)]
        [component-svg-hex-plane style-1 style-2]])))
 
-(defn ^export component-demo-orbital-transformer [size]
+(defn ^export component-demo-orbital-transformer [size event-chan]
   (let [style (styles :blue-line)]
     [:g style
      [:defs
@@ -71,12 +71,12 @@
      [:circle {:cx 0 :cy 0 :r 45}]
      [component-orbiter style 0 0]]))
 
-(defn ^export component-demo-path-unfold [size]
+(defn ^export component-demo-path-unfold [size event-chan]
   (let [style (styles :blue-line)]
     [:g style
      [component-unfolder style 0 0]]))
 
-(defn ^export component-demo-logo-unfold [size]
+(defn ^export component-demo-logo-unfold [size event-chan]
   (let [style-1 (styles :blue-line)
         style-2 (styles :blue-flat)]
     [:g style-1
@@ -84,7 +84,7 @@
       (component-svg-pattern-hatch)]
      [component-logo-unfold style-1 style-2 0 0]]))
 
-(defn ^export component-demo-logo-unfold-2 [size]
+(defn ^export component-demo-logo-unfold-2 [size event-chan]
   (let [style-1 (styles :blue-line)
         style-2 (styles :blue-flat)]
     [:g style-1
@@ -92,7 +92,7 @@
       (component-svg-pattern-hatch)]
      [component-logo-unfold-2 style-1 style-2 size 0 0]]))
 
-(defn ^export component-demo-walker [size]
+(defn ^export component-demo-walker [size event-chan]
   (let [style-1 (styles :blue-line)
         style-2 (styles :blue-flat)]
     (fn []
@@ -101,7 +101,7 @@
         (component-svg-pattern-hatch "hatch" (colors :blue) "#383838")]
        [component-walker-demo-world style-1 style-2]])))
 
-(defn ^export component-iconography [size]
+(defn ^export component-iconography [size event-chan]
   [:g
    [:defs
     (component-svg-pattern-hatch "hatch" (colors :blue) "#383838")]
