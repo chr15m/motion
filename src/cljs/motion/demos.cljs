@@ -1,6 +1,7 @@
 (ns motion.demos
   (:require [motion.fx :refer [component-svg-filter-glow component-svg-pattern-hatch]]
             [motion.shapes :refer [shapes]]
+            [motion.styles :refer [colors styles]]
             [motion.utils :refer [timeline]]
             [motion.demo-nibblets :refer [component-svg-x component-svg-+ component-svg-o]]
             [motion.demo-circles :refer [component-svg-circle-test component-svg-circle-test-2 component-svg-circle-test-3 component-svg-arc-thing]]
@@ -10,11 +11,6 @@
             [motion.demo-path-unfold :refer [component-unfolder]]
             [motion.demo-logo-unfold :refer [component-logo-unfold component-logo-unfold-2]]
             [motion.demo-walker :refer [component-walker-demo-world]]))
-
-(def styles {:blue-line {:fill "none" :stroke "#41A4E6" :stroke-width "1px" :stroke-linecap "round"}
-             :blue-flat {:fill "#41A4E6" :fill-opacity "0.3" :stroke-linecap "round"}})
-
-(def colors {:blue "#41A4E6" :background "#383838"})
 
 (defn ^export component-demo-curved-path [size]
   (let [style (styles :blue-line)]
