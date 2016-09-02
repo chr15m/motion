@@ -10,6 +10,7 @@
             [motion.demo-orbital-transformer :refer [component-orbiter]]
             [motion.demo-path-unfold :refer [component-unfolder]]
             [motion.demo-logo-unfold :refer [component-logo-unfold component-logo-unfold-2]]
+            [motion.demo-hex-popout :refer [component-hex-popout]]
             [motion.demo-walker :refer [component-walker-demo-world]]))
 
 (defn ^export component-demo-curved-path [size event-chan]
@@ -115,6 +116,15 @@
     [:g {:transform "translate(200,100)"}
      (shapes :temple)]]])
 
+(defn ^export component-demo-hex-popout [size event-chan]
+  (let [style-1 (merge (styles :blue-line) {:fill "url(#hatch)"})
+        style-2 (styles :blue-flat)]
+    (fn []
+      [:g (merge style-1 style-2)
+       [:defs
+        (component-svg-pattern-hatch)]
+       [component-hex-popout event-chan style-1 style-2 size]])))
+
 (def demos ["circles" component-demo-circles
             "nibblets" component-demo-nibblets
             "iconography" component-iconography
@@ -124,5 +134,6 @@
             "interactive: orbital transformer" component-demo-orbital-transformer
             "interactive: logo unfold" component-demo-logo-unfold
             "interactive: logo unfold #2" component-demo-logo-unfold-2
-            "interactive: walker" component-demo-walker])
+            "interactive: walker" component-demo-walker
+            "interactive: hex popout" component-demo-hex-popout])
 
