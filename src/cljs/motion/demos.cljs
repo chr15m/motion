@@ -11,6 +11,7 @@
             [motion.demo-path-unfold :refer [component-unfolder]]
             [motion.demo-logo-unfold :refer [component-logo-unfold component-logo-unfold-2]]
             [motion.demo-hex-popout :refer [component-hex-popout]]
+            [motion.demo-sci-menu :refer [component-sci-menu]]
             [motion.demo-walker :refer [component-walker-demo-world]]))
 
 (defn ^export component-demo-curved-path [size event-chan]
@@ -125,6 +126,13 @@
         (component-svg-pattern-hatch)]
        [component-hex-popout event-chan style-1 style-2 size]])))
 
+(defn ^export component-demo-sci-menu [size event-chan]
+  (fn []
+    [:g (styles :cf-12)
+     [:defs
+      (component-svg-pattern-hatch)]
+     [component-sci-menu event-chan size]]))
+
 (def demos ["circles" component-demo-circles
             "nibblets" component-demo-nibblets
             "iconography" component-iconography
@@ -135,5 +143,6 @@
             "interactive: logo unfold" component-demo-logo-unfold
             "interactive: logo unfold #2" component-demo-logo-unfold-2
             "interactive: walker" component-demo-walker
+            "interactive: sci menu" component-demo-sci-menu
             "interactive: hex popout" component-demo-hex-popout])
 
