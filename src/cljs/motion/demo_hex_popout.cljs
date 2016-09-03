@@ -44,6 +44,8 @@
               [:g {:transform "translate(50,50)"}
                [:path {:d (js/roundPathCorners (str "M 0 160 L 50 160 L 100 110 L 100 60") 5 false) :stroke-width "2px" :fill "none"}]
                [:path {:d (js/roundPathCorners (str "M 0 165 L 52 165 L 105 112 L 105 60") 5 false) :stroke-width "2px" :fill "none"}]])
+            (when (and (> t 800) (= (mod (int (/ t 300)) 2) 0))
+              [:circle {:cx 130 :cy 212 :r 5 :fill (colors :blue) :fill-opacity 1 :stroke "none"}])
             [:g
              (let [[x y] (hex-pos size -1 0)
                    fade (/ (m.max (- 100 t) 0) 100)]
