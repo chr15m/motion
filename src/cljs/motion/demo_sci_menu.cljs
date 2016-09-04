@@ -38,8 +38,8 @@
            [:g {:fill "url(#hatch)"}
             (doall (for [g (range 3)]
                      (when (> t (+ 1000 (* g 100)))
-                       [:rect {:x (+ 45 (* g (+ 35 15))) :y -95 :width 35 :height 15 :rx 3 :ry 3 :key g :on-mouse-over #(reset! graph g) :on-mouse-out #(reset! graph nil)}])))]
-           [:g
+                       [:rect {:x (+ 45 (* g (+ 35 15))) :y -115 :width 35 :height 35 :rx 3 :ry 3 :stroke-width 2 :stroke "#fff" :key g :on-mouse-over #(reset! graph g) :on-mouse-out #(reset! graph nil)}])))]
+           [:g {:transform "translate(0,-20)"}
             (when @graph
               [:path {:d "M 45 -100 L 180 -100"}])
             (case @graph

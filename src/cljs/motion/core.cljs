@@ -11,6 +11,11 @@
 
 (def m js/Math)
 
+(defn handle-svg-click [event-chan [ow oh] ev]
+  (when (= (-> ev .-target .-tagName .toLowerCase)
+         "svg")
+    (put! event-chan ["click" [(- (.-clientX ev) ow) (- (.-clientY ev) oh)]])))
+
 ;; -------------------------
 ;; Components
 
@@ -25,7 +30,7 @@
   (fn []
     (let [[ow oh] (map #(int (/ % 2)) @size)]
       [:div
-       [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"} :on-click (fn [ev] (put! event-chan ["click" [(- (.-clientX ev) ow) (- (.-clientY ev) oh)]]))}
+       [:svg {:x 0 :y 0 :width "100%" :height "100%" :style {:top "0px" :left "0px" :position "absolute"} :on-click (partial handle-svg-click event-chan [ow oh])}
 
         (component-svg-top (* ow 2))
 
