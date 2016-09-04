@@ -96,3 +96,6 @@
 (defn g-trans [x y]
   {:transform (str "translate(" x "," y ")")})
 
+(defn make-link [l]
+  (str (get (string/split js/document.location.href "/v") 0) l))
+
