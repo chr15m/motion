@@ -33,6 +33,7 @@
 (defroutes routes
   (GET "/" [] loading-page)
   (GET "/v" [] loading-page)
+  (GET "/contact" [] loading-page)
   
   (resources "/")
   (not-found "Not Found"))

@@ -39,6 +39,25 @@ a:hover {
   box-sizing: border-box;
 }
 
+#contents.contact {
+  color: #999;
+}
+
+div#back-link a {
+  top: 0;
+  left: 0;
+  position: absolute;
+  font-size: 20px;
+  padding: 0.5em;
+  padding-left: 1em;
+}
+
+#contact-link {
+  float: right;
+  padding-right: 0.5em;
+  margin-top: -0.5em;
+}
+
 svg * {
     -webkit-user-select: none;
        -moz-user-select: none;
