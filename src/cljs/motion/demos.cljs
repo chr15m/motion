@@ -108,13 +108,13 @@
    [:defs
     (component-svg-pattern-hatch "hatch" (colors :blue) "#383838")]
    [:g (merge (styles :blue-line) (styles :blue-flat) {:stroke-width "2px"})
-    [:g {:transform "translate(-200,100)"}
+    [:g {:transform "translate(-100,200)"}
      (shapes :rocket)]
-    [:g {:transform "translate(0,-200)" :fill (colors :blue)}
+    [:g {:transform "translate(0,-100)" :fill (colors :blue)}
      (shapes :wreath)
      [:g {:transform "scale(-1,1)"}
       (shapes :wreath)]]
-    [:g {:transform "translate(200,100)"}
+    [:g {:transform "translate(100,200)"}
      (shapes :temple)]]])
 
 (defn ^export component-demo-hex-popout [size event-chan]
