@@ -45,21 +45,12 @@
 
 (defn component-page-contents []
   [:div#contents
-   [:p#contact-link [:a {:href "contact"} "contact"]]
+   [:p#contact-link [:a {:href "mailto:chris@mccormick.cx"} "contact"]]
    [:h2 "demos"]
    [:ol
     (doall (map (fn [[d f]]
                   [:li {:key d} [:a {:href (str "v?" d)} d]])
                 (partition 2 demos/demos)))]])
-
-(defn component-page-contact []
-  [:div#contents.contact
-   [:p "hello."]
-   [:p "are you aerospace industry? do you build and/or operate machines that run above the clouds?"]
-   [:p "i think it would be cool to make badass interfaces for space gear. it's a dream of mine. if you think that would be cool too then hit me up."]
-   [:p "the demos here are not animations, they are functional software. i have decades of experience interfacing with different systems and protocols. i am expensive but fast and i have a high focus on detail."]
-   [:p "if this sounds good to you let's talk about how we can make some neat UIs for your space gear & systems."]
-   [:p [:a {:href "mailto:chris@mccormickit.com"} "email me"] "."]])
 
 (defn component-page-viewer []
   (let [demo-name (js/unescape (get (string/split js/document.location.href "?") 1))
@@ -81,9 +72,6 @@
 
 (secretary/defroute #"(.*)/v$" []
   (session/put! :current-page #'component-page-viewer))
-
-(secretary/defroute #"(.*)/contact$" []
-  (session/put! :current-page #'component-page-contact))
 
 ;; -------------------------
 ;; Initialize app

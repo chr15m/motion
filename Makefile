@@ -6,7 +6,7 @@ APP=build/js/app.js
 IDX=build/index.html
 FNT=build/fonts
 DEP=build/js/rounding.js
-SYM=build/v.html build/contact.html
+SYM=build/v.html
 
 all: $(APP) $(CSS) $(IDX) $(SYM) $(FNT) $(DEP)
 
